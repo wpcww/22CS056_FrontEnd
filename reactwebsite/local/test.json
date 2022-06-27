@@ -1,0 +1,20 @@
+[
+    {
+        "Type":"Migration",
+        "Requirement":
+        [
+            [{"Description1":"Architecture Diagram"},{"AttachmentURL":"https://google.com"}],
+            [{"Description2":"Current Site"},{"AttachmentURL":""}],
+            [{"Description3":"Compliance/ Requirement"},{"AttachmentURL":""}]
+        ]
+    },
+    {
+        "Type":"Type2",
+        "Requirement":
+        [
+            [{"Description1":"Architecture Diagram"},{"AttachmentURL":"https://yahoo.com"}],
+            [{"Description2":"Current Site"},{"AttachmentURL":""}],
+            [{"Description3":"Compliance/ Requirement"},{"AttachmentURL":""}]
+        ]
+    }
+]
