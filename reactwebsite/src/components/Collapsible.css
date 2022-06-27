@@ -1,0 +1,21 @@
+.collapsible .content {
+    padding: 6px;
+    background-color: #eeeeee;
+}
+.collapsible .header {
+    background-color: #dddddd;
+    padding: 6px;
+    cursor: pointer;
+}
+
+.reqDiv{
+    display: flex;
+    justify-content: space-between;
+    gap: 1vw;
+}
+
+.reqDivItem{
+    width: 50%;
+    /*background-color: aquamarine;*/
+}
+

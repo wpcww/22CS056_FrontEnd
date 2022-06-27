@@ -1,4 +1,16 @@
 td, th {
-    border: 1px solid #ddd;
+    border: 1px solid rgb(58, 58, 58);
     padding: 8px;
+}
+
+.mainArea {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 70vh;
+    height: 20vh;
+    margin: auto;
+    padding-top: 5vh;
+    background-color: #dedede;
+
 }

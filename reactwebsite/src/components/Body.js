@@ -24,22 +24,22 @@ function Body(){
     return(
         <>
         <div className='mainArea'>
-        <tbody>
-                <tr>
-                    <th>Checklist</th>
-                    <th>Id</th>
-                    <th>Description</th>
-                    <th>Attachment</th>
-                </tr>
-                {Object.values(data).map((item, i) => (
-                    <tr key={i}>
-                        <td>{item.Type}</td>
-                        <td>{i}</td>
-                        <td>{item.Requirement[0][0]["Description1"]}</td>
-                        <td>{item.Requirement[0][1]["AttachmentURL"]}</td>
+            <tbody>
+                    <tr>
+                        <th>Checklist</th>
+                        <th>Id</th>
+                        <th>Description</th>
+                        <th>Attachment</th>
                     </tr>
-                ))}
-            </tbody>
+                    {Object.values(data).map((item, i) => (
+                        <tr key={i}>
+                            <td>{item.Type}</td>
+                            <td>{i}</td>
+                            <td>{item.Requirement[0][0]["Description"]}</td>
+                            <td>{item.Requirement[0][1]["AttachmentURL"]}</td>
+                        </tr>
+                    ))}
+            </tbody>            
         </div>
 
         </>

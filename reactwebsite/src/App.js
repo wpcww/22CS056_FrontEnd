@@ -1,7 +1,9 @@
 import React from 'react';
+import useCollapse from 'react-collapsed';
 import './App.css';
 import Navbar from './components/Navbar';
 import Body from './components/Body';
+import Collapsible from './components/Collapsible';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -12,7 +14,8 @@ function App() {
         <Routes>
           <Route path='/' />
         </Routes>
-        <Body />
+        
+        <Collapsible />
 
       </Router>
     </>

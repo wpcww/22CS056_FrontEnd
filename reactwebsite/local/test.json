@@ -3,18 +3,18 @@
         "Type":"Migration",
         "Requirement":
         [
-            [{"Description1":"Architecture Diagram"},{"AttachmentURL":"https://google.com"}],
-            [{"Description2":"Current Site"},{"AttachmentURL":""}],
-            [{"Description3":"Compliance/ Requirement"},{"AttachmentURL":""}]
+            {"Description":"Architecture Diagram","AttachmentURL":"https://google.com"},
+            {"Description":"Current Site","AttachmentURL":""},
+            {"Description":"Compliance/ Requirement","AttachmentURL":""}
         ]
     },
     {
         "Type":"Type2",
         "Requirement":
         [
-            [{"Description1":"Architecture Diagram"},{"AttachmentURL":"https://yahoo.com"}],
-            [{"Description2":"Current Site"},{"AttachmentURL":""}],
-            [{"Description3":"Compliance/ Requirement"},{"AttachmentURL":""}]
+            {"Description":"T2D1","AttachmentURL":"https://yahoo.com"},
+            {"Description":"T2D2","AttachmentURL":""},
+            {"Description":"T2D3","AttachmentURL":""}
         ]
     }
 ]
