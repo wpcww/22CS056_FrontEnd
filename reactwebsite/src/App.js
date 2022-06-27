@@ -3,6 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Collapsible from './components/Collapsible';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Create from './components/Create';
 
 function App() {
   return (
@@ -10,10 +11,9 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' />
+          <Route path='/' element={<Collapsible />}/>
+          <Route path='/Create' element={<Create />}/>
         </Routes>
-        
-        <Collapsible />
 
       </Router>
     </>
