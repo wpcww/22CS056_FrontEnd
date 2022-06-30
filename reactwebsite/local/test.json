@@ -1,20 +1,81 @@
 [
     {
-        "Type":"Migration",
-        "Requirement":
-        [
-            {"Description":"Architecture Diagram","AttachmentURL":"https://google.com"},
-            {"Description":"Current Site","AttachmentURL":""},
-            {"Description":"Compliance/ Requirement","AttachmentURL":""}
-        ]
+       "Name":"Migration",
+       "Requirement":
+       [
+           {
+               "Type":"Single",
+               "Value":["Compliance","http://google.com"]
+           },
+           {
+               "Type":"Option",
+               "Value":["Type of Migration",""],
+               "Branch":[
+                   {
+                       "Type":"Single",
+                       "Value":["On Premise",""]
+                   },
+                   {
+                       "Type":"Option",
+                       "Value":["Providers",""],
+                       "Branch":[
+                        {
+                            "Type":"Single",
+                            "Value":["GCP",""]
+                        },
+                        {
+                            "Type":"Single",
+                            "Value":["Azure",""]
+                        } 
+                       ]
+                   },
+                   {
+                        "Type":"Option",
+                        "Value":["Other options",""],
+                        "Branch":[
+                            {
+                                "Type":"Single",
+                                "Value":["Option1",""]
+                            },
+                            {
+                                "Type":"Single",
+                                "Value":["Option2",""]
+                            },
+                            {
+                                "Type":"Single",
+                                "Value":["Option3",""]
+                            }
+                        ]
+                   }
+               ]
+           }
+       ]
+   
+   
+   
     },
     {
-        "Type":"Type2",
-        "Requirement":
-        [
-            {"Description":"T2D1","AttachmentURL":"https://yahoo.com"},
-            {"Description":"T2D2","AttachmentURL":""},
-            {"Description":"T2D3","AttachmentURL":""}
-        ]
-    }
-]
+       "Name":"Training",
+       "Requirement":
+       [
+           {
+               "Type":"Single",
+               "Value":["Time Range",""]
+           },
+           {
+               "Type":"Single",
+               "Value":["Number of Participants",""]
+           }
+       ]
+    },
+    {
+       "Name":"Oracle",
+       "Requirement":
+       [
+           {
+               "Type":"Single",
+               "Value":["Budget",""]
+           }
+       ]
+    } 
+   ]

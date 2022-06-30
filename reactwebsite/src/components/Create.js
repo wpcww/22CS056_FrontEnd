@@ -1,13 +1,24 @@
-import React, {useState, useEffect} from 'react'
-import './Create.css'
+import React, { useState } from "react";
+import "./Create.css";
 
-function Create(){
+function generate(){
     return(
-        <>
-            
-            <div>Create Template</div>
-        </>
+        <div></div>
     )
+}
+
+function Create() {
+  return(
+    <>
+        <div>Create template</div>
+        <div><button>hrtr</button></div>
+    </>
+
+
+  )
+
+  
+  
 }
 
 export default Create;

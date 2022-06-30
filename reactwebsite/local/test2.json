@@ -1,0 +1,52 @@
+[
+    {
+        "keyName": "Job A",
+        "description": "If the project contains ",
+        "decessor": ["Job B", "Job C"]
+    },
+    {
+        "keyName": "Job B",
+        "description": "hahaha",
+        "decessor": ["Job E", "Job F"]
+    },
+    {
+        "keyName": "Job C",
+        "description": "hahaha",
+        "decessor": ["Job Q", "Job R", "Job S"]
+    },
+    {
+        "keyName": "Job X",
+        "description": "hahaha",
+        "decessor": []
+    },
+
+
+    {
+        "ProjectName":"T1",
+        "Choice":["On prem","Fully Cloud"],
+        "Desciption":""
+    },
+
+
+    {
+        "1": {
+            "name": "Architecture Diagram",
+            "data": ["Excel", "URL1"]
+        },
+        "2": {
+            "name": "Current Site",
+            "data": ["One drive", "URL2"]
+        },
+        "3": {
+            "name": "Compliance",
+            "data": null
+        }
+    }
+    ,
+    {
+        "Job A": ["1", "2", "3"],
+        "Job B": [],
+        "Job C": ["4", "5", "6"]
+    }
+    
+]

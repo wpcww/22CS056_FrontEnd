@@ -23,15 +23,45 @@ return (
     </div>
     );
 }
+
+function Branching(json){
+
+    if (json["Type"] === "Single"){
+        return(
+            <div className='reqDiv'>
+                        <div className='reqDivItem'><input type="checkbox"/>{json["Value"][0]}</div>
+                        <div className='reqDivItem'><a href={json["Value"][1]}>{json["Value"][1]}</a></div>
+            </div>
+        )
+    }else{
+        return(
+            <>
+                <div><input type="checkbox"/>{json["Value"][0]}:</div>
+                
+                <div className='newBranch'>----------------
+                {json["Branch"].map((branchList) => {
+                    return(
+                        Branching(branchList)
+                    )
+                    
+                })}
+                </div>    
+            </>
+        )
+    }
+}
+
 function Collapsible() {
-    const [data, getData] = useState([])
-    const URL = 'https://s3.amazonaws.com/pocbucket2.brian/test.json'
+    const [record, getData] = useState([])
+    const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
+    const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
 
     useEffect(() => {
         fetchData()
     }, [])
 
     const fetchData = () => {
+        
         fetch(URL)
           .then((res) =>
             res.json())
@@ -40,20 +70,21 @@ function Collapsible() {
             console.log(response);
             getData(response);
           })
+        
+        
+
+          
      
     }
     
-    const itemList = data.map((data,i) => {
+    const itemList = record.map((data,i) => {
         return (
-            <Section key={i} title={data.Type}>
+            <Section key={i} title={data.Name}>
                 <div>Requirements:</div>
-                {data.Requirement.map((desc, j) => {
+                {data.Requirement.map((ReqList) => {
                     return (
                     <>
-                    <div className='reqDiv'>
-                        <div className='reqDivItem'><input type="checkbox"/>{desc["Description"]}</div>
-                        <div className='reqDivItem'><a href={desc["AttachmentURL"]}>{desc["AttachmentURL"]}</a></div>
-                    </div>
+                        {Branching(ReqList)}
                     </>
                         
                         
@@ -62,11 +93,9 @@ function Collapsible() {
         )
     })
 
-
-
     return (
         <div className="preferences">
-            
+
             {itemList}
 
        </div>
