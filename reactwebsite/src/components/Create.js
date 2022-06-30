@@ -8,10 +8,19 @@ function generate(){
 }
 
 function Create() {
+  const [input, setInput] = useState([
+    {Name:"", Requirement:[]}
+  ])
   return(
     <>
         <div>Create template</div>
-        <div><button>hrtr</button></div>
+        <form>
+          { input.map((records, i) => (
+            <div key={i}>
+              <input type="text"/>
+            </div>
+          ))}
+        </form>
     </>
 
 
