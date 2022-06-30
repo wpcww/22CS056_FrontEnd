@@ -6,13 +6,12 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 function Create() {
   const [input, setInput] = useState([
-    {Name:"A", Requirement:[]},
-    {Name:"B", Requirement:[]}
+    {Name:"", Requirement:[{"Type":"Single","Value":["",""]}]},
   ])
 
-  const handleChangeInput = (id, event) => {
+  const handleChangeInput = (recKey, event) => {
     const newInputFields = input.map(i => {
-      if(id === i.id) {
+      if(recKey === i.Name) {
         i[event.target.name] = event.target.value
       }
       return i;
@@ -33,17 +32,37 @@ function Create() {
   return(
     <>
         <div>Create template</div>
+        <div>Current json: {JSON.stringify(input)}</div>
         <Container>
           <form>
-            { input.map((records, i) => (
-              <div key={i}>
-                <TextField
-                  name="name"
-                  label="Project Name"
-                  variant="filled"
-                  value={input.Name}
-                />
-              </div>
+            {input.map((records, i) => (
+              <>
+                <div>
+                  <TextField
+                    name="Name"
+                    label="Project Name"
+                    variant="filled"
+                    value={input.Name}
+                    onChange={event => handleChangeInput(records["Name"], event)}
+                  />
+                </div>
+                <div key="0">
+                  <TextField
+                    name="Requirement"
+                    label="Requirement Item"
+                    variant="filled"
+                    value={input.Requirement}
+                    onChange={event => handleChangeInput(records["Name"], event)}
+                  />
+                  <TextField
+                    name="Requirement"
+                    label="URL(Optional)"
+                    variant="filled"
+                    value={input.Requirement}
+                    onChange={event => handleChangeInput(records["Name"], event)}
+                  />
+                </div>
+              </>
             ))}
           </form> 
         </Container>
