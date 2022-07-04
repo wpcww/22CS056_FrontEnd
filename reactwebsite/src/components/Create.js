@@ -3,6 +3,7 @@ import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useThemeProps } from "@mui/system";
 
 function Create() {
   const [input, setInput] = useState(
@@ -15,14 +16,16 @@ function Create() {
     setInput(temp);
   }
 
-  const handleChangeRequirement = (recKey, event) => {
+  const handleChangeRequirement = (iKey, recKey, event) => {
     const temp = JSON.parse(JSON.stringify(input));
-    temp["Requirement"][0]["Value"][recKey]=event.target.value
+    temp["Requirement"][iKey]["Value"][recKey]=event.target.value
     setInput(temp);
   }
 
-  const handleAddFields = () => {
-    setInput([...input, { Name:'',  Requirement:[] }])
+  const handleAddReq = () => {
+    const temp = JSON.parse(JSON.stringify(input));
+    temp["Requirement"].push({"Type":"Single","Value":["",""]})
+    setInput(temp)
   }
 
   const handleRemoveFields = id => {
@@ -30,6 +33,31 @@ function Create() {
     values.splice(values.findIndex(value => value.id === id), 1);
     setInput(values);
   }
+
+  const reqTemplate = input["Requirement"].map((item, iKey) => {
+    return(
+      <>
+      <div key={iKey.toString()}>
+        <TextField
+          name="Requirement"
+          label="Requirement Item"
+          variant="filled"
+          value={item["Value"][0]}
+          onChange={event => handleChangeRequirement(iKey, 0, event)}
+        />
+        <TextField
+          name="Requirement"
+          label="URL(Optional)"
+          variant="filled"
+          value={item["Value"][1]}
+          onChange={event => handleChangeRequirement(iKey, 1, event)}
+        />
+        </div>
+    </>
+    )
+
+  }
+  )
 
   return(
     <>
@@ -48,22 +76,10 @@ function Create() {
                     onChange={event => handleChangeInput(input["Name"], event)}
                   />
                 </div>
-                <div key="0">
-                  <TextField
-                    name="Requirement"
-                    label="Requirement Item"
-                    variant="filled"
-                    value={input.Requirement[0][0]}
-                    onChange={event => handleChangeRequirement(0, event)}
-                  />
-                  <TextField
-                    name="Requirement"
-                    label="URL(Optional)"
-                    variant="filled"
-                    value={input.Requirement[0][1]}
-                    onChange={event => handleChangeRequirement(1, event)}
-                  />
-                </div>
+                {reqTemplate}
+                <button type="button" className="btn btn-primary mt-2" onClick={handleAddReq}>
+                    Add Requirement
+                  </button>
               </>
           </form> 
         </Container>
