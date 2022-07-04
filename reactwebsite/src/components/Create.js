@@ -3,7 +3,6 @@ import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useThemeProps } from "@mui/system";
 
 function Create() {
   const [input, setInput] = useState(
@@ -25,13 +24,13 @@ function Create() {
   const handleAddReq = () => {
     const temp = JSON.parse(JSON.stringify(input));
     temp["Requirement"].push({"Type":"Single","Value":["",""]})
-    setInput(temp)
+    setInput(temp);
   }
 
-  const handleRemoveFields = id => {
-    const values  = [...input];
-    values.splice(values.findIndex(value => value.id === id), 1);
-    setInput(values);
+  const handleRemoveField = (id) => {
+    const temp = JSON.parse(JSON.stringify(input));
+    temp["Requirement"].splice(id,1)
+    setInput(temp)
   }
 
   const reqTemplate = input["Requirement"].map((item, iKey) => {
@@ -52,6 +51,7 @@ function Create() {
           value={item["Value"][1]}
           onChange={event => handleChangeRequirement(iKey, 1, event)}
         />
+        <RemoveIcon type="button" onClick={() => handleRemoveField(iKey)} />
         </div>
     </>
     )
@@ -79,7 +79,7 @@ function Create() {
                 {reqTemplate}
                 <button type="button" className="btn btn-primary mt-2" onClick={handleAddReq}>
                     Add Requirement
-                  </button>
+                </button>
               </>
           </form> 
         </Container>
