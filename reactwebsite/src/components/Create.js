@@ -15,6 +15,12 @@ function Create() {
     setInput(temp);
   }
 
+  const handleChangeRequirement = (recKey, event) => {
+    const temp = JSON.parse(JSON.stringify(input));
+    temp["Requirement"][0]["Value"][recKey]=event.target.value
+    setInput(temp);
+  }
+
   const handleAddFields = () => {
     setInput([...input, { Name:'',  Requirement:[] }])
   }
@@ -47,15 +53,15 @@ function Create() {
                     name="Requirement"
                     label="Requirement Item"
                     variant="filled"
-                    value={input.Requirement}
-                    onChange={event => handleChangeInput(null, event)}
+                    value={input.Requirement[0][0]}
+                    onChange={event => handleChangeRequirement(0, event)}
                   />
                   <TextField
                     name="Requirement"
                     label="URL(Optional)"
                     variant="filled"
-                    value={input.Requirement}
-                    onChange={event => handleChangeInput(null, event)}
+                    value={input.Requirement[0][1]}
+                    onChange={event => handleChangeRequirement(1, event)}
                   />
                 </div>
               </>
