@@ -3,7 +3,7 @@ import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button, ThemeProvider } from "@mui/material";
+import { Button } from "@mui/material";
 
 function Create() {
   const [name, setName] = useState("")
@@ -54,19 +54,17 @@ function Create() {
   }
 
   const handleAddReq = (Predecessor) => {
-    //Case layer 0
-      //Add new key value pair
-      var newRecord = _uuid().toString()
-      structClone.current[newRecord] = {
-        "Predecessor":Predecessor,
-        "Successor":[],
-        "Value":["",""]
-      }
-      //Update Predecessor's successor
-      structClone.current[Predecessor].Successor.push(newRecord)
-      //data part
-      data.current[newRecord] = ["",""]
-    //Case branch
+    //Add new key value pair
+    var newRecord = _uuid().toString()
+    structClone.current[newRecord] = {
+      "Predecessor":Predecessor,
+      "Successor":[],
+      "Value":["",""]
+    }
+    //Update Predecessor's successor
+    structClone.current[Predecessor].Successor.push(newRecord)
+    //data part
+    data.current[newRecord] = ["",""]
     commit()
   }
 
@@ -79,9 +77,7 @@ function Create() {
 
   const handleRemove = (index) => {
     if(struct[index].Successor.length === 0){
-      //Remove item
       delete structClone.current[index]
-      
     }else{
       struct[index].Successor.map((item) => {
         handleRemove(item)
@@ -178,6 +174,7 @@ function Create() {
             
           }}></RemoveIcon>
         </div>
+        <div className="newBranch">
         {
           //Recursion
           struct[index].Successor.map(item =>{
@@ -193,6 +190,7 @@ function Create() {
           <button type="button" className="btn btn-primary mt-2" onClick={() => handleAddReq(index)}>
             Add Requirement
           </button>
+        </div>
         </div>
       </>
     )
