@@ -54,7 +54,7 @@ function Branching(json){
 function Collapsible() {
     const [record, getData] = useState([])
     const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
-    const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
+    //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
 
     useEffect(() => {
         fetchData()
