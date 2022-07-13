@@ -32,6 +32,21 @@ function Create() {
     }
   )
 
+  const output = useRef(
+    {
+      "Name":"",
+      "Requirement":[]
+    }
+  )
+
+  const build = () => {
+    output.current.Name = name
+    Object.keys(struct).map((item) => {
+      // output.current.Requirement = 
+    })
+    output.current.Requirement = struct
+  }
+
   const commit = () => {
     const temp = JSON.parse(JSON.stringify(structClone.current))
     setStruct(temp)
@@ -228,6 +243,7 @@ function Create() {
         <div>Data: {JSON.stringify(data.current)}</div>
         {/* <div>Current json: {JSON.stringify(struct)}</div>
         <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
+        <div>Output: {JSON.stringify(output.current)}</div>
         <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
       </>
     )
@@ -255,7 +271,7 @@ function Create() {
                       Add Requirement
                   </button>
                 </div>
-                <button type="button" onClick={() => commit()}>Update</button>
+                <button type="button" onClick={() => {build(); commit()}}>Update</button>
               </>
           </form> 
         </Container>
