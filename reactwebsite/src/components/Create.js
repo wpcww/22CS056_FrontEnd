@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useRef } from 'react';
+import React, { useRef, useState } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -18,13 +17,25 @@ function Create() {
     }
   )
 
+  const structClone = useRef(
+    {
+      "0":{
+      "Predecessor":null,
+      "Successor":[]
+      }
+    }
+  )
+
   const data = useRef(
     {
       "0":["",""]
     }
   )
 
-  const remQueue = useRef([])
+  const commit = () => {
+    const temp = JSON.parse(JSON.stringify(structClone.current))
+    setStruct(temp)
+  }
 
   function _uuid() {
     var d = Date.now();
@@ -43,98 +54,70 @@ function Create() {
   }
 
   const handleAddReq = (Predecessor) => {
-    const temp = JSON.parse(JSON.stringify(struct));
     //Case layer 0
-    
       //Add new key value pair
       var newRecord = _uuid().toString()
-      temp[newRecord] = {
+      structClone.current[newRecord] = {
         "Predecessor":Predecessor,
         "Successor":[],
         "Value":["",""]
       }
       //Update Predecessor's successor
-      temp[Predecessor].Successor.push(newRecord)
-
+      structClone.current[Predecessor].Successor.push(newRecord)
       //data part
       data.current[newRecord] = ["",""]
     //Case branch
-    setStruct(temp);
+    commit()
   }
 
-  const getChildList = (index, json) => {
-    console.log(json[index].Successor)
-    if(json[index].Successor.length === 0){
-      remQueue.current.push(index)
-    }else{
-      Object.keys(json[index]).map((item) => {
-        delete json[index]
-        getChildList(item, json)
-      })
-    }
+  const handleRemovePred = (index) => {
+    var rIndex = struct[struct[index].Predecessor].Successor.indexOf(index)
+      if (rIndex !== 1){
+        structClone.current[struct[index].Predecessor].Successor.splice(rIndex, 1)
+      }
   }
 
   const handleRemove = (index) => {
-    const temp = JSON.parse(JSON.stringify(struct))
     if(struct[index].Successor.length === 0){
-      remQueue.current.push(index)
+      //Remove item
+      delete structClone.current[index]
+      
     }else{
       struct[index].Successor.map((item) => {
-        remQueue.current.push(index)
         handleRemove(item)
+        delete structClone.current[index]
       })
     }
   }
 
-  const handlePredClear = (index) => {
-    const temp = JSON.parse(JSON.stringify(struct))
-    //Remove predecessor's successor
-    for (let i = 0; i < temp[temp[index].Predecessor].Successor.length; i++){
-      if(temp[temp[index].Predecessor].Successor[i] === index){
-        temp[temp[index].Predecessor].Successor.splice(i, 1)
-      }
-    }
-  }
-
-  const handleRQ = () => {
-    remQueue.current.map((item) => {
-      const temp = JSON.parse(JSON.stringify(struct))
-      delete temp[item]
-      setStruct(temp)
-    })
-  }
-
   const handleSingle = (index) =>{
-    const temp = JSON.parse(JSON.stringify(struct))
     //Remove all Successor
-    temp[index].Successor.map((item) => {
-      return delete temp[item]
+    structClone.current[index].Successor.map((item, i) => {
+      handleRemovePred(item)
+      handleRemove(item)
     })
-    console.log(temp)
-    //
-    setStruct(temp)
   }
 
   const handleMulti = (index) =>{
-    const temp = JSON.parse(JSON.stringify(struct))
     //Remove all Successor
-    temp[index].Successor.map((item) => {
-      return handleRemove(item)
+    structClone.current[index].Successor.map((item) => {
+      handleRemovePred(item)
+      handleRemove(item)
     })
     //Change type by adding children, using index as predecessor
     handleAddReq(index)
   }
 
   const DisplaySingle = (props) => {
-    var index = props.objKey
-    //console.log(data.current)
+    const index = props.objKey
+    //console.log(index)
     return (
       <>
         <div>
-          <Button key="Single" onClick={() => handleSingle(index)}>
-            Single
-          </Button>
-          <Button key="Multi" onClick={() => handleMulti(index)}>
+          <Button key="Multi" onClick={() => {
+              handleMulti(index)
+              commit()
+            }}>
             Multiple
           </Button>
         </div>
@@ -155,12 +138,11 @@ function Create() {
           //value={data.index[1]}
           onChange={(e) => handleChangeInput(index, 1, e)}
           />
-          <RemoveIcon onClick={(index) => 
+          <RemoveIcon onClick={() => 
             {
-              handlePredClear(index)
+              handleRemovePred(index)
               handleRemove(index)
-              handleRQ()
-              remQueue.current = []
+              commit()
             }}></RemoveIcon>
         </div>
       </>
@@ -169,14 +151,15 @@ function Create() {
 
   const DisplayMultiple = (props) => {
     const index = props.objKey
+    // console.log(index)
     return(
       <>
         <div>
-          <Button key="Single" onClick={() => handleSingle(index)}>
+        <Button key="Single" onClick={() => {
+              handleSingle(index)
+              commit()
+            }}>
             Single
-          </Button>
-          <Button key="Multi" onClick={() => handleMulti(index)}>
-            Multiple
           </Button>
         </div>
         <div>
@@ -188,37 +171,29 @@ function Create() {
           onChange={(e) => handleChangeInput(index, 0, e)}
           />
           <RemoveIcon onClick={() => {
-            handlePredClear(index)
+            handleRemovePred(index)
             handleRemove(index)
-            handleRQ()
-            remQueue.current = []
+            const temp = JSON.parse(JSON.stringify(structClone.current))
+            setStruct(temp)
+            
           }}></RemoveIcon>
         </div>
         {
           //Recursion
           struct[index].Successor.map(item =>{
-            //console.log(struct[item].Predecessor)
               if (struct[item].Predecessor === index && struct[item].Successor.length === 0){
-                //console.log("Index: " + index + " Item: " + item)
                 return(<DisplaySingle objKey={item}/>)
               }else if(struct[item].Successor.length !== 0 && item !== "0"){
-                console.log("Multi")
-                return(<DisplayMultiple/>)
+                return(<DisplayMultiple objKey={item}/>)
               }
               return null
-              
-              
           })
-          
-          
         }
         <div>
           <button type="button" className="btn btn-primary mt-2" onClick={() => handleAddReq(index)}>
             Add Requirement
           </button>
         </div>
-
-
       </>
     )
   }
@@ -226,44 +201,44 @@ function Create() {
   const RequirementDisplay = () => {
     //console.log()
     var displayList = []
-
-    Object.keys(struct).map(itemKey => {
-    let obj = struct[itemKey]
-      if(obj.Predecessor === "0" && obj.Successor.length === 0){
+    Object.keys(struct).map(item => {
+    //console.log(struct[item])
+      if(struct[item].Predecessor === "0" && struct[item].Successor.length === 0){
         displayList.push(
           <>
             <div>====== Main Requirement ======</div>
-            <DisplaySingle objKey={itemKey}/>
+            <DisplaySingle objKey={item}/>
           </>
         )
-      }else if(obj.Successor.length !== 0 && itemKey !== "0"){
+      }else if(struct[item].Successor.length !== 0 && item !== "0" && struct[item].Predecessor === "0"){
         displayList.push(
           <>
             <div>====== Main Requirement ======</div>
-            <DisplayMultiple objKey={itemKey}/>
+            <DisplayMultiple objKey={item}/>
           </>
         )
       }
-      return null
     }
     )
     return displayList
   }
 
-  
+  const DebugArea = () => {
+    return (
+      <>
+        <div>Project Name: {name}</div>
+        <div>Data: {JSON.stringify(data.current)}</div>
+        {/* <div>Current json: {JSON.stringify(struct)}</div>
+        <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
+        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
+      </>
+    )
+  }
+
   return(
     <>
         <div>Create template</div>
-        <div>Project Name: {name}</div>
-        <div>Current json: {JSON.stringify(struct)}</div>
-        <div>Queue: {JSON.stringify(remQueue)}
-        <Button type="button" onClick={()=>{
-          remQueue.current=[]
-          getChildList("0",struct)
-        }
-          } 
-          >Update</Button>
-        </div>
+        <DebugArea/>
         <Container>
           <form>
               <>
@@ -282,7 +257,7 @@ function Create() {
                       Add Requirement
                   </button>
                 </div>
-                <button type="submit">Submit Here</button>
+                <button type="button" onClick={() => commit()}>Update</button>
               </>
           </form> 
         </Container>
