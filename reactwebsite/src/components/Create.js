@@ -41,10 +41,13 @@ function Create() {
 
   const build = () => {
     output.current.Name = name
-    Object.keys(struct).map((item) => {
-      // output.current.Requirement = 
-    })
     output.current.Requirement = struct
+    Object.keys(struct).map((item) => {
+      if(item !== "0"){
+        output.current.Requirement[item].Value = data.current[item]
+        //console.log(output.current.Requirement[item])
+      }
+    })
   }
 
   const commit = () => {
