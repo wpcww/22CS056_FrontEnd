@@ -4,6 +4,8 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Create() {
   const [name, setName] = useState("")
@@ -48,7 +50,10 @@ function Create() {
         //console.log(output.current.Requirement[item])
       }
     })
+    toast("Updated!")
   }
+
+  const notify = () => toast("test")
 
   const commit = () => {
     const temp = JSON.parse(JSON.stringify(structClone.current))
@@ -252,6 +257,19 @@ function Create() {
     )
   }
 
+  const post = () => {
+    fetch('https://samplewebsite.com/API/', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(output)
+  });
+
+
+  }
+
   return(
     <>
         <div>Create template</div>
@@ -278,6 +296,7 @@ function Create() {
               </>
           </form> 
         </Container>
+        <ToastContainer />
     </>
   )
 }
