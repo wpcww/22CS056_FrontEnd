@@ -24,35 +24,45 @@ return (
     );
 }
 
-function Branching(json){
-
-    if (json["Type"] === "Single"){
-        return(
-            <div className='reqDiv'>
-                        <div className='reqDivItem'><input type="checkbox"/>{json["Value"][0]}</div>
-                        <div className='reqDivItem'><a href={json["Value"][1]}>{json["Value"][1]}</a></div>
-            </div>
-        )
-    }else{
-        return(
-            <>
-                <div><input type="checkbox"/>{json["Value"][0]}:</div>
-                
-                <div className='newBranch'>----------------
-                {json["Branch"].map((branchList) => {
-                    return(
-                        Branching(branchList)
-                    )
-                    
-                })}
-                </div>    
-            </>
-        )
-    }
-}
-
 function Collapsible() {
     const record2 = [{
+        "Name": "Migration",
+        "Requirement": {
+          "0": {
+            "Predecessor": null,
+            "Successor": [
+              "021c46e4-ddf1-418f-9647-baad0558ecb9"
+            ]
+          },
+          "021c46e4-ddf1-418f-9647-baad0558ecb9": {
+            "Predecessor": "0",
+            "Successor": [
+              "e8c1bbc1-bd5e-42d9-b95a-481bc292c4a2",
+              "87ef940f-0497-42df-a958-00ef13a909a1"
+            ],
+            "Value": [
+              "Provider",
+              ""
+            ]
+          },
+          "e8c1bbc1-bd5e-42d9-b95a-481bc292c4a2": {
+            "Predecessor": "021c46e4-ddf1-418f-9647-baad0558ecb9",
+            "Successor": [],
+            "Value": [
+              "Azure",
+              "m.com"
+            ]
+          },
+          "87ef940f-0497-42df-a958-00ef13a909a1": {
+            "Predecessor": "021c46e4-ddf1-418f-9647-baad0558ecb9",
+            "Successor": [],
+            "Value": [
+              "GCP",
+              "goo.com"
+            ]
+          }
+        }
+      },{
         "Name": "Project Name",
         "Requirement": {
           "0": {
@@ -142,22 +152,6 @@ function Collapsible() {
           
      
     }
-    
-    const itemList = record.map((data,i) => {
-        return (
-            <Section key={i} title={data.Name}>
-                <div>Requirements:</div>
-                {data.Requirement.map((ReqList) => {
-                    return (
-                    <>
-                        {Branching(ReqList)}
-                    </>
-                        
-                        
-                )})}
-            </Section>
-        )
-    })
 
     const DisplayMultiple = (props) => {
         const index = props.objKey
@@ -169,11 +163,11 @@ function Collapsible() {
                 <div className='newBranch'>
                 {
                     data[index].Successor.map(item =>{
-                        if (data[index].Predecessor === index && data[index].Successor.length === 0){
-                            //console.log("Single: " + data[item])
+                        if (data[item].Predecessor === index && data[item].Successor.length === 0){
+                            console.log("Inner Single: " + data[item])
                           return(<DisplaySingle objKey={item} content={data}/>)
-                        }else if(data[index].Successor.length !== 0 && item !== "0"){
-                            //console.log("Multi: " + data[item])
+                        }else if(data[item].Successor.length !== 0 && item !== "0"){
+                            console.log("Inner Multi: " + data[item])
                           return(<DisplayMultiple objKey={item} content={data}/>)
                         }
                     })
@@ -187,7 +181,7 @@ function Collapsible() {
     const DisplaySingle = (props) => {
         const index = props.objKey
         const data = props.content
-        console.log(data)
+        //console.log(data[index])
         return (
             <>
                 <div className='reqDiv'>
@@ -205,12 +199,14 @@ function Collapsible() {
         Object.keys(reqJson).map(item => {
         //console.log(reqJson[item])
           if(reqJson[item].Predecessor === "0" && reqJson[item].Successor.length === 0){
+            console.log("Single: " + reqJson[item].Value[0])
             displayList.push(
               <>
                 <DisplaySingle objKey={item} content={reqJson}/>
               </>
             )
           }else if(reqJson[item].Successor.length !== 0 && item !== "0" && reqJson[item].Predecessor === "0"){
+            console.log("Multi: " + reqJson[item].Value[0])
             displayList.push(
               <>
                 <DisplayMultiple objKey={item} content={reqJson}/>
@@ -222,7 +218,7 @@ function Collapsible() {
         return displayList
       }
 
-    const itemList2 = record2.map((reqItem, i) => {
+    const itemList2 = record.map((reqItem, i) => {
         return (
             <Section key={i} title={reqItem.Name}>
                 <div>Requirements:</div>
