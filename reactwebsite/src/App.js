@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Collapsible from './components/Collapsible';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Create from './components/Create';
+import Manage from './components/Manage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Collapsible />}/>
           <Route path='/Create' element={<Create />}/>
+          <Route path='/Manage' element={<Manage />}/>
         </Routes>
 
       </Router>
