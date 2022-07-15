@@ -53,8 +53,6 @@ function Create() {
     toast("Updated!")
   }
 
-  const notify = () => toast("test")
-
   const commit = () => {
     const temp = JSON.parse(JSON.stringify(structClone.current))
     setStruct(temp)
@@ -258,13 +256,9 @@ function Create() {
   }
 
   const post = () => {
-    fetch('https://samplewebsite.com/API/', {
+    fetch('https://5msl1adfyb.execute-api.ap-east-1.amazonaws.com/test/create', {
     method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(output)
+    body: JSON.stringify(output.current)
   });
 
 
@@ -292,7 +286,7 @@ function Create() {
                       Add Requirement
                   </button>
                 </div>
-                <button type="button" onClick={() => {build(); commit()}}>Update</button>
+                <button type="button" onClick={() => {build(); commit(); post()}}>Update</button>
               </>
           </form> 
         </Container>
