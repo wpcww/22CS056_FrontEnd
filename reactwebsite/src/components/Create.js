@@ -7,7 +7,7 @@ import { Button } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Create() {
+function Create(props) {
   const [name, setName] = useState("")
 
   const [struct, setStruct] = useState(
@@ -241,20 +241,21 @@ function Create() {
     return displayList
   }
 
-  const DebugArea = () => {
-    return (
-      <>
-        <div>=====================DEBUG=====================</div>
-        <div>Project Name: {name}</div>
-        <div>Data: {JSON.stringify(data.current)}</div>
-        {/* <div>Current json: {JSON.stringify(struct)}</div>
-        <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
-        <div>Output: {JSON.stringify(output.current)}</div>
-        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
-        <div>=====================DEBUG=====================</div>
-      </>
-    )
-  }
+  // const DebugArea = () => {
+  //   return (
+  //     <>
+  //       <div>=====================DEBUG=====================</div>
+  //       <div>Project Name: {name}</div>
+  //       <div>Data: {JSON.stringify(data.current)}</div>
+  //       {/* <div>Current json: {JSON.stringify(struct)}</div>
+  //       <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
+  //       <div>Output: {JSON.stringify(output.current)}</div>
+  //       <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
+  //       <div>Test message: {props.json}</div>
+  //       <div>=====================DEBUG=====================</div>
+  //     </>
+  //   )
+  // }
 
   const post = () => {
     fetch('https://5msl1adfyb.execute-api.ap-east-1.amazonaws.com/test/create', {
@@ -263,20 +264,32 @@ function Create() {
   });
   }
 
-  // const read = (json) => {
-  //   setName(json.Name);
-  //   setStruct(json.Requirement);
-  //   structClone.current = json.Requirement;
-  //   Object.keys(json.Requirement).forEach((item) => {
-  //     data.current[item] = json.Requirement[item]
+  const Init = (props) => {
+    console.log(JSON.stringify(props.singleRecord))
+    if(props.singleRecord === undefined){
+      return (
+        <div>Create template</div>
+      )
+    }else{
+      const json = props.singleRecord;
+      console.log("Name: "+ json.Name)
+      setName(json.Name);
+      setStruct(json.Requirement);
+      structClone.current = json.Requirement;
+      Object.keys(json.Requirement).forEach((item) => {
+        data.current[item] = json.Requirement[item]
 
-  //   })
+      })
+      return (
+        <div>Edit Requirement Record</div>
+      )
+    }
 
-  // }
+  }
 
   return(
     <>
-        <div>Create template</div>
+        <Init singleRecord={props.json}/>
         <Container>
           <form>
               <>
@@ -299,7 +312,7 @@ function Create() {
               </>
           </form> 
         </Container>
-        <DebugArea/>
+        {/* <DebugArea/> */}
         <ToastContainer />
     </>
   )

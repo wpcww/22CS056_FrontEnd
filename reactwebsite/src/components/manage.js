@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import useCollapse from 'react-collapsed';
 import './Manage.css';
 import Create from './Create';
@@ -13,11 +13,13 @@ function Manage() {
         fetchData()
     }, [])
 
+    const sendCreate = useRef({})
     const [showCreate, setShowCreate] = useState(false)
     const CreateBlock = () =>{
+        
         return (
             <div>
-                {showCreate ? <Create /> : null}
+                {showCreate ? <Create json = {sendCreate.current}/> : null}
             </div>
         )
     }
@@ -45,7 +47,12 @@ function Manage() {
         <div className="collapsible">
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
-                <Button onClick={() => setShowCreate(true)}>Edit</Button>
+                <Button onClick={() => {
+                    //console.log(props.title)
+                    sendCreate.current = props.title;
+                    console.log(sendCreate.current)
+                    setShowCreate(true);
+                }}>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>
                 </div>
                 <div className="icon">
@@ -77,14 +84,14 @@ function Manage() {
                 
                 <div className='newBranch'>
                 {
-                    data[index].Successor.forEach(item =>{
+                    data[index].Successor.map(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
                             //console.log("Inner Single: " + item)
                           return(<DisplaySingle objKey={item} content={data} key={item + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
                             //console.log("Inner Multi: " + item)
                           return(<DisplayMultiple objKey={item} content={data} key={item + "DM"}/>)
-                        }
+                        }return null
                     })
                 }
                 

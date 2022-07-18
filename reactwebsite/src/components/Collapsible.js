@@ -25,109 +25,7 @@ return (
 }
 
 function Collapsible() {
-    // const record2 = [{
-    //     "Name": "Migration",
-    //     "Requirement": {
-    //       "0": {
-    //         "Predecessor": null,
-    //         "Successor": [
-    //           "021c46e4-ddf1-418f-9647-baad0558ecb9"
-    //         ]
-    //       },
-    //       "021c46e4-ddf1-418f-9647-baad0558ecb9": {
-    //         "Predecessor": "0",
-    //         "Successor": [
-    //           "e8c1bbc1-bd5e-42d9-b95a-481bc292c4a2",
-    //           "87ef940f-0497-42df-a958-00ef13a909a1"
-    //         ],
-    //         "Value": [
-    //           "Provider",
-    //           ""
-    //         ]
-    //       },
-    //       "e8c1bbc1-bd5e-42d9-b95a-481bc292c4a2": {
-    //         "Predecessor": "021c46e4-ddf1-418f-9647-baad0558ecb9",
-    //         "Successor": [],
-    //         "Value": [
-    //           "Azure",
-    //           "m.com"
-    //         ]
-    //       },
-    //       "87ef940f-0497-42df-a958-00ef13a909a1": {
-    //         "Predecessor": "021c46e4-ddf1-418f-9647-baad0558ecb9",
-    //         "Successor": [],
-    //         "Value": [
-    //           "GCP",
-    //           "goo.com"
-    //         ]
-    //       }
-    //     }
-    //   },{
-    //     "Name": "Project Name",
-    //     "Requirement": {
-    //       "0": {
-    //         "Predecessor": null,
-    //         "Successor": [
-    //           "603cb6a7-a8a5-4677-878a-713ae6edf66f",
-    //           "6679019c-bd28-4498-a50a-75115c1f6c9d",
-    //           "77c8e50e-9467-4cfc-b2cb-78488d6ec951"
-    //         ]
-    //       },
-    //       "603cb6a7-a8a5-4677-878a-713ae6edf66f": {
-    //         "Predecessor": "0",
-    //         "Successor": [
-    //           "fce2c1b0-3413-40de-b11d-a0d059e4a007",
-    //           "078357e6-a813-4105-93ac-41ca77e63e5e"
-    //         ],
-    //         "Value": [
-    //           "Requirement1",
-    //           ""
-    //         ]
-    //       },
-    //       "fce2c1b0-3413-40de-b11d-a0d059e4a007": {
-    //         "Predecessor": "603cb6a7-a8a5-4677-878a-713ae6edf66f",
-    //         "Successor": [
-    //           "fc39f0c6-229c-4e4b-b887-5ce34dd606fa"
-    //         ],
-    //         "Value": [
-    //           "Requirement1-1",
-    //           ""
-    //         ]
-    //       },
-    //       "6679019c-bd28-4498-a50a-75115c1f6c9d": {
-    //         "Predecessor": "0",
-    //         "Successor": [],
-    //         "Value": [
-    //           "Requirement2",
-    //           "www"
-    //         ]
-    //       },
-    //       "77c8e50e-9467-4cfc-b2cb-78488d6ec951": {
-    //         "Predecessor": "0",
-    //         "Successor": [],
-    //         "Value": [
-    //           "Requirement3",
-    //           ""
-    //         ]
-    //       },
-    //       "fc39f0c6-229c-4e4b-b887-5ce34dd606fa": {
-    //         "Predecessor": "fce2c1b0-3413-40de-b11d-a0d059e4a007",
-    //         "Successor": [],
-    //         "Value": [
-    //           "Requirement1-1-1",
-    //           ""
-    //         ]
-    //       },
-    //       "078357e6-a813-4105-93ac-41ca77e63e5e": {
-    //         "Predecessor": "603cb6a7-a8a5-4677-878a-713ae6edf66f",
-    //         "Successor": [],
-    //         "Value": [
-    //           "Requirement1-2",
-    //           ""
-    //         ]
-    //       }
-    //     }
-    //   }]
+    
     const [record, getData] = useState([])
     const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
     //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
@@ -146,11 +44,6 @@ function Collapsible() {
             console.log(response);
             getData(response);
           })
-        
-        
-
-          
-     
     }
 
     const DisplayMultiple = (props) => {
@@ -162,15 +55,16 @@ function Collapsible() {
                 
                 <div className='newBranch'>
                 {
-                    data[index].Successor.forEach(item =>{
+                    data[index].Successor.map(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
                             //console.log("Inner Single: " + data[item])
-                          return(<DisplaySingle objKey={item} content={data} key={index + "DS"}/>)
+                          return(<DisplaySingle objKey={item} content={data} key={item + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
                             //console.log("Inner Multi: " + data[item])
-                          return(<DisplayMultiple objKey={item} content={data} key={index + "DM"}/>)
-                        }
-                    })
+                          return(<DisplayMultiple objKey={item} content={data} key={item + "DM"}/>)
+                        }return null
+                    }
+                  )
                 }
                 
                 </div>
@@ -196,7 +90,7 @@ function Collapsible() {
         //console.log()
         var reqJson = props.reqJson
         var displayList = []
-        Object.keys(reqJson).forEach(item => {
+        Object.keys(reqJson).map(item => {
         //console.log(reqJson[item])
           if(reqJson[item].Predecessor === "0" && reqJson[item].Successor.length === 0){
             //console.log("Single: " + reqJson[item].Value[0])
@@ -212,7 +106,7 @@ function Collapsible() {
                 <DisplayMultiple objKey={item} content={reqJson}/>
               </div>
             )
-          }
+          }return null
         }
         )
         return displayList
