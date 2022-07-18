@@ -244,12 +244,14 @@ function Create() {
   const DebugArea = () => {
     return (
       <>
+        <div>=====================DEBUG=====================</div>
         <div>Project Name: {name}</div>
         <div>Data: {JSON.stringify(data.current)}</div>
         {/* <div>Current json: {JSON.stringify(struct)}</div>
         <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
         <div>Output: {JSON.stringify(output.current)}</div>
         <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
+        <div>=====================DEBUG=====================</div>
       </>
     )
   }

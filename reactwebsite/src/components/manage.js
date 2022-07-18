@@ -79,11 +79,11 @@ function Manage() {
                 {
                     data[index].Successor.forEach(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
-                            console.log("Inner Single: " + data[item])
-                          return(<DisplaySingle objKey={item} content={data}/>)
+                            //console.log("Inner Single: " + data[item])
+                          return(<DisplaySingle objKey={item} content={data} key={index + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
-                            console.log("Inner Multi: " + data[item])
-                          return(<DisplayMultiple objKey={item} content={data}/>)
+                            //console.log("Inner Multi: " + data[item])
+                          return(<DisplayMultiple objKey={item} content={data} key={index + "DM"}/>)
                         }
                     })
                 }
@@ -114,18 +114,18 @@ function Manage() {
         Object.keys(reqJson).forEach(item => {
         //console.log(reqJson[item])
           if(reqJson[item].Predecessor === "0" && reqJson[item].Successor.length === 0){
-            console.log("Single: " + reqJson[item].Value[0])
+            //console.log("Single: " + reqJson[item].Value[0])
             displayList.push(
-              <>
+              <div key={item + "DS"}>
                 <DisplaySingle objKey={item} content={reqJson}/>
-              </>
+              </div>
             )
           }else if(reqJson[item].Successor.length !== 0 && item !== "0" && reqJson[item].Predecessor === "0"){
-            console.log("Multi: " + reqJson[item].Value[0])
+            //console.log("Multi: " + reqJson[item].Value[0])
             displayList.push(
-              <>
+              <div key={item + "DM"}>
                 <DisplayMultiple objKey={item} content={reqJson}/>
-              </>
+              </div>
             )
           }
         }
@@ -137,7 +137,7 @@ function Manage() {
         return (
             <Section key={i} title={reqItem}>
                 <div>Requirements:</div>
-                <RequirementDisplay reqJson = {reqItem.Requirement}/>
+                <RequirementDisplay reqJson = {reqItem.Requirement} key={reqItem}/>
                 
             </Section>
         )
@@ -145,7 +145,7 @@ function Manage() {
     })
 
     return (
-        <div className="preferences" class="flexbox-container">
+        <div className="preferences">
 
             {itemList2}
             <CreateBlock />
