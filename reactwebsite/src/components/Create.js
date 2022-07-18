@@ -260,14 +260,23 @@ function Create() {
     method: 'POST',
     body: JSON.stringify(output.current)
   });
+  }
 
+  const read = (json) => {
+    setName(json.Name);
+    setStruct(json.Requirement);
+    structClone.current = json.Requirement;
+    Object.keys(json.Requirement).map((item) => {
+      data.current[item] = json.Requirement[item]
+
+    })
 
   }
 
   return(
     <>
         <div>Create template</div>
-        <DebugArea/>
+        {/* <DebugArea/> */}
         <Container>
           <form>
               <>
