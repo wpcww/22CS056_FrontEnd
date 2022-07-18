@@ -77,7 +77,7 @@ function Manage() {
                 
                 <div className='newBranch'>
                 {
-                    data[index].Successor.map(item =>{
+                    data[index].Successor.forEach(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
                             console.log("Inner Single: " + data[item])
                           return(<DisplaySingle objKey={item} content={data}/>)
@@ -111,7 +111,7 @@ function Manage() {
         //console.log()
         var reqJson = props.reqJson
         var displayList = []
-        Object.keys(reqJson).map(item => {
+        Object.keys(reqJson).forEach(item => {
         //console.log(reqJson[item])
           if(reqJson[item].Predecessor === "0" && reqJson[item].Successor.length === 0){
             console.log("Single: " + reqJson[item].Value[0])
@@ -145,7 +145,7 @@ function Manage() {
     })
 
     return (
-        <div className="preferences">
+        <div className="preferences" class="flexbox-container">
 
             {itemList2}
             <CreateBlock />

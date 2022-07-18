@@ -22,3 +22,8 @@
 .newBranch{
     margin-left: 5vw;
 }
+
+.preferences{
+    display: flex;
+    flex-direction: row;
+}

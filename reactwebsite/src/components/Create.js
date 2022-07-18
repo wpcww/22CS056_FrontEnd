@@ -44,7 +44,7 @@ function Create() {
   const build = () => {
     output.current.Name = name
     output.current.Requirement = struct
-    Object.keys(struct).map((item) => {
+    Object.keys(struct).forEach((item) => {
       if(item !== "0"){
         output.current.Requirement[item].Value = data.current[item]
         //console.log(output.current.Requirement[item])
@@ -66,7 +66,7 @@ function Create() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        return (c === 'x' ? r : ((r & 0x3) | 0x8)).toString(16);
     });
   }
 
@@ -100,7 +100,7 @@ function Create() {
     if(struct[index].Successor.length === 0){
       delete structClone.current[index]
     }else{
-      struct[index].Successor.map((item) => {
+      struct[index].Successor.forEach((item) => {
         handleRemove(item)
         delete structClone.current[index]
       })
@@ -109,7 +109,7 @@ function Create() {
 
   const handleSingle = (index) =>{
     //Remove all Successor
-    structClone.current[index].Successor.map((item, i) => {
+    structClone.current[index].Successor.forEach((item, i) => {
       handleRemovePred(item)
       handleRemove(item)
     })
@@ -117,7 +117,7 @@ function Create() {
 
   const handleMulti = (index) =>{
     //Remove all Successor
-    structClone.current[index].Successor.map((item) => {
+    structClone.current[index].Successor.forEach((item) => {
       handleRemovePred(item)
       handleRemove(item)
     })
@@ -129,9 +129,9 @@ function Create() {
     const index = props.objKey
     //console.log(index)
     return (
-      <>
+      <div key={index}>
         <div>
-          <Button key="Multi" onClick={() => {
+          <Button key={index + "Multi"} onClick={() => {
               handleMulti(index)
               commit()
             }}>
@@ -162,7 +162,7 @@ function Create() {
               commit()
             }}></RemoveIcon>
         </div>
-      </>
+      </div>
     )
   }
 
@@ -218,22 +218,21 @@ function Create() {
   }
 
   const RequirementDisplay = () => {
-    //console.log()
     var displayList = []
-    Object.keys(struct).map(item => {
+    Object.keys(struct).forEach(item => {
     //console.log(struct[item])
       if(struct[item].Predecessor === "0" && struct[item].Successor.length === 0){
         displayList.push(
           <>
             <div>====== Main Requirement ======</div>
-            <DisplaySingle objKey={item}/>
+            <DisplaySingle objKey={item} key={item + "DS"}/>
           </>
         )
       }else if(struct[item].Successor.length !== 0 && item !== "0" && struct[item].Predecessor === "0"){
         displayList.push(
           <>
             <div>====== Main Requirement ======</div>
-            <DisplayMultiple objKey={item}/>
+            <DisplayMultiple objKey={item} key={item + "DM"}/>
           </>
         )
       }
@@ -262,21 +261,20 @@ function Create() {
   });
   }
 
-  const read = (json) => {
-    setName(json.Name);
-    setStruct(json.Requirement);
-    structClone.current = json.Requirement;
-    Object.keys(json.Requirement).map((item) => {
-      data.current[item] = json.Requirement[item]
+  // const read = (json) => {
+  //   setName(json.Name);
+  //   setStruct(json.Requirement);
+  //   structClone.current = json.Requirement;
+  //   Object.keys(json.Requirement).forEach((item) => {
+  //     data.current[item] = json.Requirement[item]
 
-    })
+  //   })
 
-  }
+  // }
 
   return(
     <>
         <div>Create template</div>
-        {/* <DebugArea/> */}
         <Container>
           <form>
               <>
@@ -299,6 +297,7 @@ function Create() {
               </>
           </form> 
         </Container>
+        <DebugArea/>
         <ToastContainer />
     </>
   )
