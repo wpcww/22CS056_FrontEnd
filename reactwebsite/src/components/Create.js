@@ -172,7 +172,7 @@ function Create() {
     return(
       <>
         <div>
-        <Button key="Single" onClick={() => {
+        <Button key={index + "Single"} onClick={() => {
               handleSingle(index)
               commit()
             }}>
@@ -200,9 +200,9 @@ function Create() {
           //Recursion
           struct[index].Successor.map(item =>{
               if (struct[item].Predecessor === index && struct[item].Successor.length === 0){
-                return(<DisplaySingle objKey={item}/>)
+                return(<DisplaySingle objKey={item} key={item + "DS"}/>)
               }else if(struct[item].Successor.length !== 0 && item !== "0"){
-                return(<DisplayMultiple objKey={item}/>)
+                return(<DisplayMultiple objKey={item} key={item + "DM"}/>)
               }
               return null
           })
@@ -219,25 +219,25 @@ function Create() {
 
   const RequirementDisplay = () => {
     var displayList = []
-    Object.keys(struct).forEach(item => {
+    React.Children.toArray(Object.keys(struct).forEach(item => {
     //console.log(struct[item])
       if(struct[item].Predecessor === "0" && struct[item].Successor.length === 0){
         displayList.push(
-          <>
+          <div key={item + "DS"}>
             <div>====== Main Requirement ======</div>
-            <DisplaySingle objKey={item} key={item + "DS"}/>
-          </>
+            <DisplaySingle objKey={item}/>
+          </div>
         )
       }else if(struct[item].Successor.length !== 0 && item !== "0" && struct[item].Predecessor === "0"){
         displayList.push(
-          <>
+          <div key={item + "DM"}>
             <div>====== Main Requirement ======</div>
-            <DisplayMultiple objKey={item} key={item + "DM"}/>
-          </>
+            <DisplayMultiple objKey={item} />
+          </div>
         )
       }
     }
-    )
+    ))
     return displayList
   }
 
