@@ -79,11 +79,11 @@ function Manage() {
                 {
                     data[index].Successor.forEach(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
-                            //console.log("Inner Single: " + data[item])
-                          return(<DisplaySingle objKey={item} content={data} key={index + "DS"}/>)
+                            //console.log("Inner Single: " + item)
+                          return(<DisplaySingle objKey={item} content={data} key={item + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
-                            //console.log("Inner Multi: " + data[item])
-                          return(<DisplayMultiple objKey={item} content={data} key={index + "DM"}/>)
+                            //console.log("Inner Multi: " + item)
+                          return(<DisplayMultiple objKey={item} content={data} key={item + "DM"}/>)
                         }
                     })
                 }
