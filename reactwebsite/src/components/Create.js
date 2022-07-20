@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -7,22 +7,7 @@ import { Button } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Create({name, setName, struct, setStruct}) {
-
-  const structClone = useRef(
-    {
-      "0":{
-      "Predecessor":null,
-      "Successor":[]
-      }
-    }
-  )
-
-  const data = useRef(
-    {
-      "0":["",""]
-    }
-  )
+function Create({state, setState, structClone, data}) {
 
   const output = useRef(
     {
@@ -32,9 +17,9 @@ function Create({name, setName, struct, setStruct}) {
   )
 
   const build = () => {
-    output.current.Name = name
-    output.current.Requirement = struct
-    Object.keys(struct).forEach((item) => {
+    output.current.Name = state.nameField
+    output.current.Requirement = state.structField
+    Object.keys(state.structField).forEach((item) => {
       if(item !== "0"){
         output.current.Requirement[item].Value = data.current[item]
         //console.log(output.current.Requirement[item])
@@ -45,7 +30,8 @@ function Create({name, setName, struct, setStruct}) {
 
   const commit = () => {
     const temp = JSON.parse(JSON.stringify(structClone.current))
-    setStruct(temp)
+    //setStruct(temp)
+    setState({...state, structField: temp})
   }
 
   function _uuid() {
@@ -80,17 +66,17 @@ function Create({name, setName, struct, setStruct}) {
   }
 
   const handleRemovePred = (index) => {
-    var rIndex = struct[struct[index].Predecessor].Successor.indexOf(index)
+    var rIndex = state.structField[state.structField[index].Predecessor].Successor.indexOf(index)
       if (rIndex !== 1){
-        structClone.current[struct[index].Predecessor].Successor.splice(rIndex, 1)
+        structClone.current[state.structField[index].Predecessor].Successor.splice(rIndex, 1)
       }
   }
 
   const handleRemove = (index) => {
-    if(struct[index].Successor.length === 0){
+    if(state.structField[index].Successor.length === 0){
       delete structClone.current[index]
     }else{
-      struct[index].Successor.forEach((item) => {
+      state.structField[index].Successor.forEach((item) => {
         handleRemove(item)
         delete structClone.current[index]
       })
@@ -117,7 +103,7 @@ function Create({name, setName, struct, setStruct}) {
 
   const DisplaySingle = (props) => {
     const index = props.objKey
-    //console.log(index)
+    //console.log(data.current[index][0])
     return (
       <div key={index}>
         <div>
@@ -158,7 +144,7 @@ function Create({name, setName, struct, setStruct}) {
 
   const DisplayMultiple = (props) => {
     const index = props.objKey
-    // console.log(index)
+    //console.log(index)
     return(
       <>
         <div>
@@ -174,24 +160,25 @@ function Create({name, setName, struct, setStruct}) {
           name={"cataName" + index}
           label="Requirement"
           variant="filled"
-          //value={data[index][0]}
+          defaultValue={data.current[index][0]}
           onChange={(e) => handleChangeInput(index, 0, e)}
           />
           <RemoveIcon onClick={() => {
             handleRemovePred(index)
             handleRemove(index)
             const temp = JSON.parse(JSON.stringify(structClone.current))
-            setStruct(temp)
+            //setStruct(temp)
+            setState({...state, structField: temp})
             
           }}></RemoveIcon>
         </div>
         <div className="newBranch">
         {
           //Recursion
-          struct[index].Successor.map(item =>{
-              if (struct[item].Predecessor === index && struct[item].Successor.length === 0){
+          state.structField[index].Successor.map(item =>{
+              if (state.structField[item].Predecessor === index && state.structField[item].Successor.length === 0){
                 return(<DisplaySingle objKey={item} key={item + "DS"}/>)
-              }else if(struct[item].Successor.length !== 0 && item !== "0"){
+              }else if(state.structField[item].Successor.length !== 0 && item !== "0"){
                 return(<DisplayMultiple objKey={item} key={item + "DM"}/>)
               }
               return null
@@ -209,16 +196,16 @@ function Create({name, setName, struct, setStruct}) {
 
   const RequirementDisplay = () => {
     var displayList = []
-    React.Children.toArray(Object.keys(struct).forEach(item => {
+    React.Children.toArray(Object.keys(state.structField).forEach(item => {
     //console.log(struct[item])
-      if(struct[item].Predecessor === "0" && struct[item].Successor.length === 0){
+      if(state.structField[item].Predecessor === "0" && state.structField[item].Successor.length === 0){
         displayList.push(
           <div key={item + "DS"}>
             <div>====== Main Requirement ======</div>
             <DisplaySingle objKey={item}/>
           </div>
         )
-      }else if(struct[item].Successor.length !== 0 && item !== "0" && struct[item].Predecessor === "0"){
+      }else if(state.structField[item].Successor.length !== 0 && item !== "0" && state.structField[item].Predecessor === "0"){
         displayList.push(
           <div key={item + "DM"}>
             <div>====== Main Requirement ======</div>
@@ -235,12 +222,13 @@ function Create({name, setName, struct, setStruct}) {
     return (
       <>
         <div>=====================DEBUG=====================</div>
-        <div>Project Name: {name}</div>
+        <div>Project Name: {state.nameField}</div>
         <div>Data: {JSON.stringify(data.current)}</div>
-        {/* <div>Current json: {JSON.stringify(struct)}</div>
-        <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
+        <div>JSON: {JSON.stringify(state.structField)}</div>
+        {/* <div>Current json: {JSON.stringify(struct)}</div> */}
+        <div>Clone json: {JSON.stringify(structClone.current)}</div>
         <div>Output: {JSON.stringify(output.current)}</div>
-        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
+        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(state.structField)).toString()}</div>
         <div>=====================DEBUG=====================</div>
       </>
     )
@@ -264,9 +252,10 @@ function Create({name, setName, struct, setStruct}) {
                     name="pName"
                     label="Project Name"
                     variant="filled"
-
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={state.nameField}
+                    onChange={(e) => {
+                      setState({nameField: e.target.value})
+                    }}
                   />
                 </div>
                 <RequirementDisplay/>

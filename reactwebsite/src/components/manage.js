@@ -4,7 +4,7 @@ import useCollapse from 'react-collapsed';
 import './Manage.css';
 import Create from './Create';
 
-function Manage({name, setName, struct, setStruct}) {
+function Manage({state, setState, structClone, data}) {
     const [record, getData] = useState([])
     const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
     //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
@@ -19,13 +19,14 @@ function Manage({name, setName, struct, setStruct}) {
             res.json())
      
           .then((response) => {
-            console.log(response);
+            //console.log(response);
             const temp = JSON.parse(JSON.stringify(response))
             getData(temp);
           }) 
     }
 
     function Section(props) {
+        //console.log(props.title.Requirement)
         const config = {
             defaultExpanded: props.defaultExpanded || false,
             collapsedHeight: props.collapsedHeight || 0
@@ -36,7 +37,20 @@ function Manage({name, setName, struct, setStruct}) {
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
                 
-                <Button onClick={() => setName(props.title.Name)}>Edit</Button>
+                <Button onClick={() => {
+                    console.log(props.title.Name)
+                    structClone.current = props.title.Requirement
+                    Object.keys(props.title.Requirement).forEach((item) => {
+                        if(item !== "0"){
+                            //console.log(props.title.Requirement[item].Value)
+                            data.current[item]=[props.title.Requirement[item].Value[0],props.title.Requirement[item].Value[1]]
+                        }
+                    })
+                    const temp = JSON.parse(JSON.stringify(structClone.current))
+                    //setStruct(temp)
+                    setState({structField: temp, nameField: props.title.Name})
+
+                }}>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>
                 </div>
                 <div className="icon">
@@ -141,7 +155,7 @@ function Manage({name, setName, struct, setStruct}) {
                 {itemList2}
             </div>
             <div className="editArea">
-                <Create name={name} setName={setName} struct={struct} setStruct={setStruct}/>
+                <Create state={state} setState={setState} structClone={structClone} data={data}/>
             </div>
         </div>
         );

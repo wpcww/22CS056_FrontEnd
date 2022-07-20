@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState , useRef } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Collapsible from './components/Collapsible';
@@ -7,10 +7,23 @@ import Create from './components/Create';
 import Manage from './components/Manage';
 
 function App() {
-  const [passRecord, setPass] = useState(1)
-  const passRecord2 = useRef(1)
-  const [name, setName] = useState("")
-  const [struct, setStruct] = useState(
+  const [state, setState] = useState({
+    nameField:"",
+    structField:{
+      "0":{
+      "Predecessor":null,
+      "Successor":[]
+      }
+    }
+  })
+
+  const data = useRef(
+    {
+      "0":["",""]
+    }
+  )
+
+  const structClone = useRef(
     {
       "0":{
       "Predecessor":null,
@@ -18,15 +31,14 @@ function App() {
       }
     }
   )
-
   return (
     <>
       <Router>
         <Navbar />
         <Routes>
           <Route path='/' element={<Collapsible />}/>
-          <Route path='/Create' element={<Create name={name} setName={setName} struct={struct} setStruct={setStruct} />}/>
-          <Route path='/Manage' element={<Manage name={name} setName={setName} struct={struct} setStruct={setStruct} />}/>
+          <Route path='/Create' element={<Create state={state} setState={setState} structClone={structClone} data={data} />}/>
+          <Route path='/Manage' element={<Manage state={state} setState={setState} structClone={structClone} data={data} />}/>
         </Routes>
 
       </Router>
