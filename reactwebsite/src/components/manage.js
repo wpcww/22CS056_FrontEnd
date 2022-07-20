@@ -4,8 +4,7 @@ import useCollapse from 'react-collapsed';
 import './Manage.css';
 import Create from './Create';
 
-function Manage({passRecord, setPass, passRecord2}) {
-    console.log("Manage passR2: " + passRecord2.current)
+function Manage({name, setName, struct, setStruct}) {
     const [record, getData] = useState([])
     const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
     //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
@@ -37,7 +36,7 @@ function Manage({passRecord, setPass, passRecord2}) {
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
                 
-                <Button onClick={() => passRecord2.current = 2}>Edit</Button>
+                <Button onClick={() => setName(props.title.Name)}>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>
                 </div>
                 <div className="icon">
@@ -142,7 +141,7 @@ function Manage({passRecord, setPass, passRecord2}) {
                 {itemList2}
             </div>
             <div className="editArea">
-                <Create passRecord={passRecord} setPass={setPass} passRecord2={passRecord2}/>
+                <Create name={name} setName={setName} struct={struct} setStruct={setStruct}/>
             </div>
         </div>
         );

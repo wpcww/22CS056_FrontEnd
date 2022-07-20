@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -7,18 +7,7 @@ import { Button } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Create({passRecord, setPass, passRecord2}) {
-  console.log("Create passR2: " + passRecord2.current)
-  const [name, setName] = useState("")
-
-  const [struct, setStruct] = useState(
-    {
-      "0":{
-      "Predecessor":null,
-      "Successor":[]
-      }
-    }
-  )
+function Create({name, setName, struct, setStruct}) {
 
   const structClone = useRef(
     {
@@ -247,7 +236,6 @@ function Create({passRecord, setPass, passRecord2}) {
       <>
         <div>=====================DEBUG=====================</div>
         <div>Project Name: {name}</div>
-        <div>passRecord2: {passRecord2.current}</div>
         <div>Data: {JSON.stringify(data.current)}</div>
         {/* <div>Current json: {JSON.stringify(struct)}</div>
         <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
@@ -276,7 +264,8 @@ function Create({passRecord, setPass, passRecord2}) {
                     name="pName"
                     label="Project Name"
                     variant="filled"
-                    //value={struct.Name || ''}
+
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>

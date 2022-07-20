@@ -9,6 +9,15 @@ import Manage from './components/Manage';
 function App() {
   const [passRecord, setPass] = useState(1)
   const passRecord2 = useRef(1)
+  const [name, setName] = useState("")
+  const [struct, setStruct] = useState(
+    {
+      "0":{
+      "Predecessor":null,
+      "Successor":[]
+      }
+    }
+  )
 
   return (
     <>
@@ -16,8 +25,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Collapsible />}/>
-          <Route path='/Create' element={<Create passRecord={passRecord} setPass={setPass} passRecord2={passRecord2}/>}/>
-          <Route path='/Manage' element={<Manage passRecord={passRecord} setPass={setPass} passRecord2={passRecord2}/>}/>
+          <Route path='/Create' element={<Create name={name} setName={setName} struct={struct} setStruct={setStruct} />}/>
+          <Route path='/Manage' element={<Manage name={name} setName={setName} struct={struct} setStruct={setStruct} />}/>
         </Routes>
 
       </Router>
