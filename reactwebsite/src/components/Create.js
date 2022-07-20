@@ -41,19 +41,6 @@ function Create(props) {
     }
   )
 
-  useEffect(() => {
-    // console.log(props.json.Name)
-    // setName(props.json.Name)
-    console.log(name)
-    //setStruct(props.singleRecord.Requirement)
-    //commit()
-    if(props === null){
-      setType(1);
-    }
-  }, [])
-
-  const [type, setType] = useState(0)
-
   const build = () => {
     output.current.Name = name
     output.current.Requirement = struct
@@ -277,18 +264,9 @@ function Create(props) {
   });
   }
 
-  const Init = (props) => {
-    if(type === 1){
-      //setName(props.json.Name)
-      console.log("Triggered")
-    }
-
-  }
-
   return(
     <>
-        {type === 0 ? <div>Create template</div>:<div>Edit Requirement Record</div>}
-        <Init />
+      <div>Create template</div>
         <Container>
           <form>
               <>

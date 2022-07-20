@@ -13,19 +13,6 @@ function Manage() {
         fetchData()
     }, [])
 
-    const sendCreate = useRef({})
-    const [showCreate, setShowCreate] = useState(false)
-    const CreateBlock = () =>{
-        console.log(sendCreate.current)
-        return (
-            <div>
-                {/* {showCreate ? <Create json = {sendCreate.current}/> : null} */}
-                {<Create json = {sendCreate.current}/>}
-            </div>
-        )
-    }
-
-
     const fetchData = () => {
         fetch(URL)
           .then((res) =>
@@ -49,13 +36,7 @@ function Manage() {
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
                 
-                <Button onClick={() => {
-                    //console.log(props.title)
-                    sendCreate.current = props.title;
-                    console.log(JSON.stringify(sendCreate.current) + " Pressed")
-                    //console.log(sendCreate.current)
-                    setShowCreate(true);
-                }}>Edit</Button>
+                <Button>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>
                 </div>
                 <div className="icon">
@@ -155,13 +136,15 @@ function Manage() {
     })
 
     return (
-        <div className="preferences">
-
-            {itemList2}
-            <CreateBlock />
-
-       </div>
-    );
+        <div className='flexContainer'>
+            <div className="preferences">
+                {itemList2}
+            </div>
+            <div className="editArea">
+                <Create />
+            </div>
+        </div>
+        );
 }
 
 export default Manage;
