@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import useCollapse from 'react-collapsed';
 import './Manage.css';
 import Create from './Create';
 
-function Manage() {
+function Manage({passRecord, setPass, passRecord2}) {
+    console.log("Manage passR2: " + passRecord2.current)
     const [record, getData] = useState([])
     const URL = 'https://eszevlom66.execute-api.ap-east-1.amazonaws.com/default/joblist'
     //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
@@ -36,7 +37,7 @@ function Manage() {
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
                 
-                <Button>Edit</Button>
+                <Button onClick={() => passRecord2.current = 2}>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>
                 </div>
                 <div className="icon">
@@ -141,7 +142,7 @@ function Manage() {
                 {itemList2}
             </div>
             <div className="editArea">
-                <Create />
+                <Create passRecord={passRecord} setPass={setPass} passRecord2={passRecord2}/>
             </div>
         </div>
         );

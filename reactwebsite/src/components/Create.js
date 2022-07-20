@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -7,7 +7,8 @@ import { Button } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Create(props) {
+function Create({passRecord, setPass, passRecord2}) {
+  console.log("Create passR2: " + passRecord2.current)
   const [name, setName] = useState("")
 
   const [struct, setStruct] = useState(
@@ -241,21 +242,21 @@ function Create(props) {
     return displayList
   }
 
-  // const DebugArea = () => {
-  //   return (
-  //     <>
-  //       <div>=====================DEBUG=====================</div>
-  //       <div>Project Name: {name}</div>
-  //       <div>Data: {JSON.stringify(data.current)}</div>
-  //       {/* <div>Current json: {JSON.stringify(struct)}</div>
-  //       <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
-  //       <div>Output: {JSON.stringify(output.current)}</div>
-  //       <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
-  //       <div>Test message: {props.json}</div>
-  //       <div>=====================DEBUG=====================</div>
-  //     </>
-  //   )
-  // }
+  const DebugArea = () => {
+    return (
+      <>
+        <div>=====================DEBUG=====================</div>
+        <div>Project Name: {name}</div>
+        <div>passRecord2: {passRecord2.current}</div>
+        <div>Data: {JSON.stringify(data.current)}</div>
+        {/* <div>Current json: {JSON.stringify(struct)}</div>
+        <div>Clone json: {JSON.stringify(structClone.current)}</div> */}
+        <div>Output: {JSON.stringify(output.current)}</div>
+        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(struct)).toString()}</div>
+        <div>=====================DEBUG=====================</div>
+      </>
+    )
+  }
 
   const post = () => {
     fetch('https://5msl1adfyb.execute-api.ap-east-1.amazonaws.com/test/create', {
@@ -289,7 +290,7 @@ function Create(props) {
               </>
           </form> 
         </Container>
-        {/* <DebugArea/> */}
+        <DebugArea/>
         <ToastContainer />
     </>
   )
