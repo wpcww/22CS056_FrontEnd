@@ -16,10 +16,11 @@ function Manage() {
     const sendCreate = useRef({})
     const [showCreate, setShowCreate] = useState(false)
     const CreateBlock = () =>{
-        
+        console.log(sendCreate.current)
         return (
             <div>
-                {showCreate ? <Create json = {sendCreate.current}/> : null}
+                {/* {showCreate ? <Create json = {sendCreate.current}/> : null} */}
+                {<Create json = {sendCreate.current}/>}
             </div>
         )
     }
@@ -47,10 +48,12 @@ function Manage() {
         <div className="collapsible">
             <div className="header" {...getToggleProps()}>
                 <div className="title">{props.title.Name}
+                
                 <Button onClick={() => {
                     //console.log(props.title)
                     sendCreate.current = props.title;
-                    console.log(sendCreate.current)
+                    console.log(JSON.stringify(sendCreate.current) + " Pressed")
+                    //console.log(sendCreate.current)
                     setShowCreate(true);
                 }}>Edit</Button>
                 <Button onClick={() => remove(props.title.Name)}>Remove</Button>

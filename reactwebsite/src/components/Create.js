@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -40,6 +40,19 @@ function Create(props) {
       "Requirement":[]
     }
   )
+
+  useEffect(() => {
+    // console.log(props.json.Name)
+    // setName(props.json.Name)
+    console.log(name)
+    //setStruct(props.singleRecord.Requirement)
+    //commit()
+    if(props === null){
+      setType(1);
+    }
+  }, [])
+
+  const [type, setType] = useState(0)
 
   const build = () => {
     output.current.Name = name
@@ -265,31 +278,17 @@ function Create(props) {
   }
 
   const Init = (props) => {
-    console.log(JSON.stringify(props.singleRecord))
-    if(props.singleRecord === undefined){
-      return (
-        <div>Create template</div>
-      )
-    }else{
-      const json = props.singleRecord;
-      console.log("Name: "+ json.Name)
-      setName(json.Name);
-      setStruct(json.Requirement);
-      structClone.current = json.Requirement;
-      Object.keys(json.Requirement).forEach((item) => {
-        data.current[item] = json.Requirement[item]
-
-      })
-      return (
-        <div>Edit Requirement Record</div>
-      )
+    if(type === 1){
+      //setName(props.json.Name)
+      console.log("Triggered")
     }
 
   }
 
   return(
     <>
-        <Init singleRecord={props.json}/>
+        {type === 0 ? <div>Create template</div>:<div>Edit Requirement Record</div>}
+        <Init />
         <Container>
           <form>
               <>
