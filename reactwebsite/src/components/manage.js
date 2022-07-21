@@ -38,7 +38,7 @@ function Manage({state, setState, structClone, data}) {
                 <div className="title">{props.title.Name}
                 
                 <Button onClick={() => {
-                    console.log(props.title.Name)
+                    //console.log(props.title.Name)
                     structClone.current = props.title.Requirement
                     Object.keys(props.title.Requirement).forEach((item) => {
                         if(item !== "0"){

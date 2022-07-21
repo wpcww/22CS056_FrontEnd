@@ -8,7 +8,7 @@ import Manage from './components/Manage';
 
 function App() {
   const [state, setState] = useState({
-    nameField:"",
+    nameField:'',
     structField:{
       "0":{
       "Predecessor":null,

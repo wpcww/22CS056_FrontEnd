@@ -196,7 +196,7 @@ function Create({state, setState, structClone, data}) {
 
   const RequirementDisplay = () => {
     var displayList = []
-    React.Children.toArray(Object.keys(state.structField).forEach(item => {
+    Object.keys(state.structField).forEach(item => {
     //console.log(struct[item])
       if(state.structField[item].Predecessor === "0" && state.structField[item].Successor.length === 0){
         displayList.push(
@@ -214,25 +214,25 @@ function Create({state, setState, structClone, data}) {
         )
       }
     }
-    ))
+    )
     return displayList
   }
 
-  const DebugArea = () => {
-    return (
-      <>
-        <div>=====================DEBUG=====================</div>
-        <div>Project Name: {state.nameField}</div>
-        <div>Data: {JSON.stringify(data.current)}</div>
-        <div>JSON: {JSON.stringify(state.structField)}</div>
-        {/* <div>Current json: {JSON.stringify(struct)}</div> */}
-        <div>Clone json: {JSON.stringify(structClone.current)}</div>
-        <div>Output: {JSON.stringify(output.current)}</div>
-        <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(state.structField)).toString()}</div>
-        <div>=====================DEBUG=====================</div>
-      </>
-    )
-  }
+  // const DebugArea = () => {
+  //   return (
+  //     <>
+  //       <div>=====================DEBUG=====================</div>
+  //       <div>Project Name: {state.nameField}</div>
+  //       <div>Data: {JSON.stringify(data.current)}</div>
+  //       <div>JSON: {JSON.stringify(state.structField)}</div>
+  //       {/* <div>Current json: {JSON.stringify(struct)}</div> */}
+  //       <div>Clone json: {JSON.stringify(structClone.current)}</div>
+  //       <div>Output: {JSON.stringify(output.current)}</div>
+  //       <div>Sync status: {(JSON.stringify(structClone.current) === JSON.stringify(state.structField)).toString()}</div>
+  //       <div>=====================DEBUG=====================</div>
+  //     </>
+  //   )
+  // }
 
   const post = () => {
     fetch('https://5msl1adfyb.execute-api.ap-east-1.amazonaws.com/test/create', {
@@ -241,9 +241,35 @@ function Create({state, setState, structClone, data}) {
   });
   }
 
+  const clear = () => {
+    setState({...state, nameField:'',
+      structField:{
+        "0":{
+        "Predecessor":null,
+        "Successor":[]
+        }
+    }})
+    data.current={
+      "0":["",""]
+    }
+    structClone.current={
+      "0":{
+        "Predecessor":null,
+        "Successor":[]
+      }
+    }
+    output.current={
+      "Name":"",
+      "Requirement":[]
+    }
+  }
+
   return(
     <>
-      <div>Create template</div>
+      <div>
+        Create template
+        <Button type="button" onClick={() => clear()}>Clear</Button>
+      </div>
         <Container>
           <form>
               <>
@@ -252,9 +278,9 @@ function Create({state, setState, structClone, data}) {
                     name="pName"
                     label="Project Name"
                     variant="filled"
-                    value={state.nameField}
+                    value={state.nameField || ''}
                     onChange={(e) => {
-                      setState({nameField: e.target.value})
+                      setState({...state, nameField: e.target.value})
                     }}
                   />
                 </div>
@@ -268,7 +294,7 @@ function Create({state, setState, structClone, data}) {
               </>
           </form> 
         </Container>
-        <DebugArea/>
+        {/* <DebugArea/> */}
         <ToastContainer />
     </>
   )
