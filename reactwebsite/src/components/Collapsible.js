@@ -1,5 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import useCollapse from 'react-collapsed';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
 import './Collapsible.css';
 function Section(props) {
     const config = {
@@ -41,7 +46,7 @@ function Collapsible() {
             res.json())
      
           .then((response) => {
-            console.log(response);
+            //console.log(response);
             getData(response);
           })
     }
@@ -51,16 +56,20 @@ function Collapsible() {
         const data = props.content
         return (
             <>
-                <div><input type="checkbox"/>{data[index].Value[0]}:</div>
+                {/* <div><input type="checkbox"/>{data[index].Value[0]}:</div> */}
+                <ListItem>
+                  <ListItemIcon>
+                    <Checkbox />
+                  </ListItemIcon>
+                  <ListItemText primary={data[index].Value[0]} />
+                </ListItem>
                 
                 <div className='newBranch'>
                 {
                     data[index].Successor.map(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
-                            //console.log("Inner Single: " + data[item])
                           return(<DisplaySingle objKey={item} content={data} key={item + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
-                            //console.log("Inner Multi: " + data[item])
                           return(<DisplayMultiple objKey={item} content={data} key={item + "DM"}/>)
                         }return null
                     }
@@ -68,6 +77,7 @@ function Collapsible() {
                 }
                 
                 </div>
+
             </>
         )
     }
@@ -79,8 +89,14 @@ function Collapsible() {
         return (
             <>
                 <div className='reqDiv'>
-                        <div className='reqDivItem'><input type="checkbox"/>{data[index].Value[0]}</div>
-                        <div className='reqDivItem'><a href={data[index].Value[1]}>{data[index].Value[1]}</a></div>
+                        {/* <div className='reqDivItem'><input type="checkbox"/>{data[index].Value[0]}</div> */}
+                        {/* <div className='reqDivItem'><a href={data[index].Value[1]}>{data[index].Value[1]}</a></div> */}
+                        <ListItem>
+                          <ListItemIcon>
+                            <Checkbox />
+                          </ListItemIcon>
+                          <ListItemText primary={data[index].Value[0]} secondary={data[index].Value[1]}/>
+                        </ListItem>
                 </div>
             </>
         )
@@ -115,9 +131,10 @@ function Collapsible() {
     const itemList2 = record.map((reqItem, i) => {
         return (
             <Section key={i} title={reqItem.Name}>
+              <List>
                 <div>Requirements:</div>
                 <RequirementDisplay reqJson = {reqItem.Requirement}/>
-                
+              </List>
             </Section>
         )
 

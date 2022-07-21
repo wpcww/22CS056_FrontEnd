@@ -10,15 +10,15 @@
 
 .reqDiv{
     display: flex;
-    justify-content: space-between;
-    gap: 1vw;
+    /* justify-content: space-between; */
+    /* gap: 1vw; */
 }
 
 .reqDivItem{
-    width: 50%;
+    /* width: 50%; */
     /*background-color: aquamarine;*/
 }
 
 .newBranch{
-    margin-left: 5vw;
+    margin-left: 45px;
 }
