@@ -1,3 +1,17 @@
 .newBranch{
     margin-left: 5vw;
 }
+
+.paper{
+    margin-bottom: 10px;
+}
+
+.btn-clear{
+    float: right;
+}
+
+.btn-upload{
+    bottom: 75px;
+    right: 75px;
+    position: fixed;
+}

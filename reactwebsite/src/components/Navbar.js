@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import './Navbar.css'
-import {Button} from './Button';
 
 function Navbar() {
     const [click, setClick] = useState(false)
+    // eslint-disable-next-line
     const [button, setButton] = useState(false)
 
     const click_Event = () => setClick(!click)
@@ -50,8 +50,7 @@ function Navbar() {
                         </Link>
                     </li>
                 
-                </ul>
-                {button && <Button buttonStyle='btn--outline'>BUY here</Button>}    
+                </ul>   
             </div>
         </nav>
     </>

@@ -27,22 +27,24 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .preferences{
-    flex-basis: 40vw;
-    flex-grow: 0;   
+
+    margin-top: 10px;
+    flex-grow: 4;   
     flex-shrink: 0;
-    min-width: fit-content
+    min-width: fit-content;
+    
 
 }
 
 .editArea{
 
-    flex-basis: 60vw;
     min-width: fit-content;
     flex-shrink: 0;
-    flex-grow: 0;  
+    flex-grow: 6;  
 }
 
 @media screen and (max-width: 640px) {
@@ -80,17 +82,17 @@
     }
     
     .preferences{
-        min-width: 100vw;
+        /* min-width: 100vw; */
         flex-basis: 1;
-        flex-grow: 0;   
+        flex-grow: 4;   
         flex-shrink: 0;
+        width:auto;
     
     }
     
     .editArea{
-        min-width: 100vw;
         flex-basis: 1;
-        flex-shrink: 0;
+        flex-shrink: 6;
         flex-grow: 0;  
     }
 

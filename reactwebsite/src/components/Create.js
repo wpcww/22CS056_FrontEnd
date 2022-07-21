@@ -3,9 +3,13 @@ import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import { Button , Paper } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Divider from '@mui/material/Divider';
+import Fab from '@mui/material/Fab';
+import PublishIcon from '@mui/icons-material/Publish';
 
 function Create({state, setState, structClone, data}) {
 
@@ -105,6 +109,7 @@ function Create({state, setState, structClone, data}) {
     const index = props.objKey
     //console.log(data.current[index][0])
     return (
+      <>
       <div key={index}>
         <div>
           <Button key={index + "Multi"} onClick={() => {
@@ -115,7 +120,7 @@ function Create({state, setState, structClone, data}) {
           </Button>
         </div>
         <div>
-          <TextField key={index + "DESC"}
+          <TextField key={index + "DESC"} style={{marginLeft:'5px'}}
           name="rText"
           label="Requirement"
           variant="filled"
@@ -123,7 +128,7 @@ function Create({state, setState, structClone, data}) {
           //value={data.current[index][0]}
           onChange={(e) => handleChangeInput(index, 0, e)}
           />
-          <TextField key={index + "URL"}
+          <TextField key={index + "URL"} style={{marginLeft:'5px'}}
           name="URL"
           label="URL (Optional)"
           variant="filled"
@@ -131,7 +136,7 @@ function Create({state, setState, structClone, data}) {
           //value={data.index[1]}
           onChange={(e) => handleChangeInput(index, 1, e)}
           />
-          <RemoveIcon onClick={() => 
+          <RemoveIcon style={{color:'red'}} onClick={() => 
             {
               handleRemovePred(index)
               handleRemove(index)
@@ -139,6 +144,7 @@ function Create({state, setState, structClone, data}) {
             }}></RemoveIcon>
         </div>
       </div>
+      </>
     )
   }
 
@@ -156,14 +162,14 @@ function Create({state, setState, structClone, data}) {
           </Button>
         </div>
         <div>
-          <TextField key={index + "Branch"}
+          <TextField key={index + "Branch"} style={{marginLeft:'5px'}}
           name={"cataName" + index}
           label="Requirement"
           variant="filled"
           defaultValue={data.current[index][0]}
           onChange={(e) => handleChangeInput(index, 0, e)}
           />
-          <RemoveIcon onClick={() => {
+          <RemoveIcon style={{color:'red'}} onClick={() => {
             handleRemovePred(index)
             handleRemove(index)
             const temp = JSON.parse(JSON.stringify(structClone.current))
@@ -185,9 +191,7 @@ function Create({state, setState, structClone, data}) {
           })
         }
         <div>
-          <button type="button" className="btn btn-primary mt-2" onClick={() => handleAddReq(index)}>
-            Add Requirement
-          </button>
+          <AddIcon style={{color: '#32CD32'}} onClick={() => handleAddReq(index)}></AddIcon>
         </div>
         </div>
       </>
@@ -200,17 +204,17 @@ function Create({state, setState, structClone, data}) {
     //console.log(struct[item])
       if(state.structField[item].Predecessor === "0" && state.structField[item].Successor.length === 0){
         displayList.push(
-          <div key={item + "DS"}>
-            <div>====== Main Requirement ======</div>
+          <Paper elevation={8} className="paper" key={item + "DS"} style={{paddingBottom:'5px', }}>
+            <div><Divider variant="middle">Main Requirement</Divider></div>
             <DisplaySingle objKey={item}/>
-          </div>
+          </Paper>
         )
       }else if(state.structField[item].Successor.length !== 0 && item !== "0" && state.structField[item].Predecessor === "0"){
         displayList.push(
-          <div key={item + "DM"}>
-            <div>====== Main Requirement ======</div>
+          <Paper elevation={8} className="paper" key={item + "DM"}>
+            <div><Divider variant="middle">Main Requirement</Divider></div>
             <DisplayMultiple objKey={item} />
-          </div>
+          </Paper>
         )
       }
     }
@@ -266,14 +270,10 @@ function Create({state, setState, structClone, data}) {
 
   return(
     <>
-      <div>
-        Create template
-        <Button type="button" onClick={() => clear()}>Clear</Button>
-      </div>
         <Container>
           <form>
               <>
-                <div>
+                <div style={{marginTop:'10px'}}>
                   <TextField
                     name="pName"
                     label="Project Name"
@@ -283,14 +283,17 @@ function Create({state, setState, structClone, data}) {
                       setState({...state, nameField: e.target.value})
                     }}
                   />
+                  <Button type="button" className="btn-clear" onClick={() => clear()}>Clear</Button>
                 </div>
                 <RequirementDisplay/>
                 <div>
-                  <button type="button" className="btn btn-primary mt-2" onClick={() => handleAddReq("0")}>
-                      Add Requirement
-                  </button>
+                  <AddIcon style={{color: '#32CD32'}} onClick={() => handleAddReq("0")}></AddIcon>
                 </div>
-                <button type="button" onClick={() => {build(); commit(); post()}}>Update</button>
+                <div className="btn-upload">
+                  <Fab style={{position: "absolute", background:'#ffdbcc', color:'#d11f00'}}>
+                    <PublishIcon type="button" onClick={() => {build(); commit(); post()}}></PublishIcon>
+                  </Fab>
+                </div>
               </>
           </form> 
         </Container>
