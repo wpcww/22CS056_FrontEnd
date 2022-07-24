@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef , useEffect } from "react";
 import "./Create.css";
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -266,6 +266,20 @@ function Create({state, setState, structClone, data}) {
       "Name":"",
       "Requirement":[]
     }
+  }
+
+  useEffect(() => {
+    init();
+  },[]);
+
+  const init = () => {
+    setState({...state, nameField:'',
+      structField:{
+        "0":{
+        "Predecessor":null,
+        "Successor":[]
+        }
+    }})
   }
 
   return(
