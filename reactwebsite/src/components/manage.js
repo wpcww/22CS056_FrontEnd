@@ -26,7 +26,6 @@ function Manage({state, setState, structClone, data}) {
     }
 
     function Section(props) {
-        //console.log(props.title.Requirement)
         const config = {
             defaultExpanded: props.defaultExpanded || false,
             collapsedHeight: props.collapsedHeight || 0
@@ -38,16 +37,13 @@ function Manage({state, setState, structClone, data}) {
                 <div className="title">{props.title.Name}
                 
                 <Button onClick={() => {
-                    //console.log(props.title.Name)
                     structClone.current = props.title.Requirement
                     Object.keys(props.title.Requirement).forEach((item) => {
                         if(item !== "0"){
-                            //console.log(props.title.Requirement[item].Value)
                             data.current[item]=[props.title.Requirement[item].Value[0],props.title.Requirement[item].Value[1]]
                         }
                     })
                     const temp = JSON.parse(JSON.stringify(structClone.current))
-                    //setStruct(temp)
                     setState({structField: temp, nameField: props.title.Name})
 
                 }}>Edit</Button>
@@ -84,10 +80,8 @@ function Manage({state, setState, structClone, data}) {
                 {
                     data[index].Successor.map(item =>{
                         if (data[item].Predecessor === index && data[item].Successor.length === 0){
-                            //console.log("Inner Single: " + item)
                           return(<DisplaySingle objKey={item} content={data} key={item + "DS"}/>)
                         }else if(data[item].Successor.length !== 0 && item !== "0"){
-                            //console.log("Inner Multi: " + item)
                           return(<DisplayMultiple objKey={item} content={data} key={item + "DM"}/>)
                         }return null
                     })
@@ -101,7 +95,6 @@ function Manage({state, setState, structClone, data}) {
     const DisplaySingle = (props) => {
         const index = props.objKey
         const data = props.content
-        //console.log(data[index])
         return (
             <>
                 <div className='reqDiv'>
@@ -113,20 +106,16 @@ function Manage({state, setState, structClone, data}) {
     }
 
     const RequirementDisplay = (props) => {
-        //console.log()
         var reqJson = props.reqJson
         var displayList = []
         Object.keys(reqJson).forEach(item => {
-        //console.log(reqJson[item])
           if(reqJson[item].Predecessor === "0" && reqJson[item].Successor.length === 0){
-            //console.log("Single: " + reqJson[item].Value[0])
             displayList.push(
               <div key={item + "DS"}>
                 <DisplaySingle objKey={item} content={reqJson}/>
               </div>
             )
           }else if(reqJson[item].Successor.length !== 0 && item !== "0" && reqJson[item].Predecessor === "0"){
-            //console.log("Multi: " + reqJson[item].Value[0])
             displayList.push(
               <div key={item + "DM"}>
                 <DisplayMultiple objKey={item} content={reqJson}/>

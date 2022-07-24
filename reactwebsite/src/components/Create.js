@@ -26,15 +26,14 @@ function Create({state, setState, structClone, data}) {
     Object.keys(state.structField).forEach((item) => {
       if(item !== "0"){
         output.current.Requirement[item].Value = data.current[item]
-        //console.log(output.current.Requirement[item])
       }
     })
     toast("Updated!")
   }
 
+  //Rerender with the all the changes done to the structure and data
   const commit = () => {
     const temp = JSON.parse(JSON.stringify(structClone.current))
-    //setStruct(temp)
     setState({...state, structField: temp})
   }
 
@@ -76,6 +75,7 @@ function Create({state, setState, structClone, data}) {
       }
   }
 
+  //Remove the selected recored, and also its children if exists
   const handleRemove = (index) => {
     if(state.structField[index].Successor.length === 0){
       delete structClone.current[index]
@@ -87,6 +87,7 @@ function Create({state, setState, structClone, data}) {
     }
   }
 
+  //Multiple type to Single type
   const handleSingle = (index) =>{
     //Remove all Successor
     structClone.current[index].Successor.forEach((item, i) => {
@@ -95,6 +96,7 @@ function Create({state, setState, structClone, data}) {
     })
   }
 
+  //Single to type to Multiple type
   const handleMulti = (index) =>{
     //Remove all Successor
     structClone.current[index].Successor.forEach((item) => {
@@ -107,7 +109,6 @@ function Create({state, setState, structClone, data}) {
 
   const DisplaySingle = (props) => {
     const index = props.objKey
-    //console.log(data.current[index][0])
     return (
       <>
       <div key={index}>
@@ -125,7 +126,6 @@ function Create({state, setState, structClone, data}) {
           label="Requirement"
           variant="filled"
           defaultValue={data.current[index][0]}
-          //value={data.current[index][0]}
           onChange={(e) => handleChangeInput(index, 0, e)}
           />
           <TextField key={index + "URL"} style={{marginLeft:'5px'}}
@@ -133,7 +133,6 @@ function Create({state, setState, structClone, data}) {
           label="URL (Optional)"
           variant="filled"
           defaultValue={data.current[index][1]}
-          //value={data.index[1]}
           onChange={(e) => handleChangeInput(index, 1, e)}
           />
           <RemoveIcon style={{color:'red'}} onClick={() => 
@@ -268,32 +267,10 @@ function Create({state, setState, structClone, data}) {
     }
   }
 
+  // Reset structure and data when navigating between pages, or at the first render
   useEffect(() => {
-    init();
+    clear();
   },[]);
-
-  const init = () => {
-    setState({...state, nameField:'',
-      structField:{
-        "0":{
-        "Predecessor":null,
-        "Successor":[]
-        }
-    }})
-    data.current={
-      "0":["",""]
-    }
-    structClone.current={
-      "0":{
-        "Predecessor":null,
-        "Successor":[]
-      }
-    }
-    output.current={
-      "Name":"",
-      "Requirement":[]
-    }
-  }
 
   return(
     <>
