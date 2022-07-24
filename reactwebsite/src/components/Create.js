@@ -280,6 +280,19 @@ function Create({state, setState, structClone, data}) {
         "Successor":[]
         }
     }})
+    data.current={
+      "0":["",""]
+    }
+    structClone.current={
+      "0":{
+        "Predecessor":null,
+        "Successor":[]
+      }
+    }
+    output.current={
+      "Name":"",
+      "Requirement":[]
+    }
   }
 
   return(
