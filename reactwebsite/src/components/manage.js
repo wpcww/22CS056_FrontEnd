@@ -127,7 +127,7 @@ function Manage({state, setState, structClone, data}) {
         return displayList
       }
 
-    const itemList2 = record.map((reqItem, i) => {
+    const itemList = record.map((reqItem, i) => {
         return (
             <Section key={i} title={reqItem}>
                 <div>Requirements:</div>
@@ -141,7 +141,7 @@ function Manage({state, setState, structClone, data}) {
     return (
         <div className='flexContainer'>
             <div className="preferences">
-                {itemList2}
+                {itemList}
             </div>
             <div className="editArea">
                 <Create state={state} setState={setState} structClone={structClone} data={data}/>

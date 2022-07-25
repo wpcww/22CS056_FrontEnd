@@ -270,6 +270,7 @@ function Create({state, setState, structClone, data}) {
   // Reset structure and data when navigating between pages, or at the first render
   useEffect(() => {
     clear();
+    // eslint-disable-next-line
   },[]);
 
   return(
