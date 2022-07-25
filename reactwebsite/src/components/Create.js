@@ -122,6 +122,7 @@ function Create({state, setState, structClone, data}) {
         </div>
         <div>
           <TextField key={index + "DESC"} style={{marginLeft:'5px'}}
+          required
           name="rText"
           label="Requirement"
           variant="filled"
@@ -280,6 +281,8 @@ function Create({state, setState, structClone, data}) {
               <>
                 <div style={{marginTop:'10px'}}>
                   <TextField
+                    required
+                    error={state.nameField === ""}
                     name="pName"
                     label="Project Name"
                     variant="filled"
