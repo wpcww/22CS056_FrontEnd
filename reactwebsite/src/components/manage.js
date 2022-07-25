@@ -66,7 +66,8 @@ function Manage({state, setState, structClone, data}) {
         await fetch('https://5msl1adfyb.execute-api.ap-east-1.amazonaws.com/test/remove', {
         method: 'DELETE',
         body: JSON.stringify({"Name":Name})
-    }).then(window.location.reload())
+        })
+        window.location.reload()
     }
 
     const DisplayMultiple = (props) => {
