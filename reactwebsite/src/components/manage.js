@@ -1,5 +1,6 @@
-import { Button } from '@mui/material';
-import React, {useState, useEffect} from 'react'
+import { Button, Dialog , DialogTitle, DialogContent } from '@mui/material';
+import { DialogContentText , DialogActions } from '@mui/material';
+import React, {useState, useEffect, useRef } from 'react'
 import useCollapse from 'react-collapsed';
 import './Manage.css';
 import Create from './Create';
@@ -25,6 +26,49 @@ function Manage({state, setState, structClone, data}) {
           }) 
     }
 
+    const deletePending = useRef("")
+
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const Alert = () => {
+        return(
+            <div>
+                <Dialog 
+                    open={open}
+                    onClose={handleClose} 
+                >
+                    <DialogTitle id="deleteConfirm">
+                    {"Are you sure?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                    The record will be removed.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        remove(deletePending.current)
+                        handleClose()
+                    }} color="primary">
+                    Confirm
+                    </Button>
+                    <Button onClick={() => handleClose()} color="primary" autoFocus>
+                    Cancel
+                    </Button>
+                </DialogActions>      
+                </Dialog>   
+            </div>
+        )
+    }
+
     function Section(props) {
         const config = {
             defaultExpanded: props.defaultExpanded || false,
@@ -47,7 +91,12 @@ function Manage({state, setState, structClone, data}) {
                     setState({structField: temp, nameField: props.title.Name})
 
                 }}>Edit</Button>
-                <Button onClick={() => remove(props.title.Name)}>Remove</Button>
+                <Button onClick={() => 
+                    {
+                        deletePending.current = props.title.Name
+                        handleOpen()
+                        
+                    }}>Remove</Button>
                 </div>
                 <div className="icon">
                     <i className={'fas fa-chevron-circle-' + (isExpanded ? 'up' : 'down')}></i>
@@ -147,6 +196,7 @@ function Manage({state, setState, structClone, data}) {
             <div className="editArea">
                 <Create state={state} setState={setState} structClone={structClone} data={data}/>
             </div>
+            <Alert />
         </div>
         );
 }
