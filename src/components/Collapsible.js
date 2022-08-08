@@ -43,7 +43,6 @@ function Collapsible() {
       .then((res) => res.json())
 
       .then((response) => {
-        //console.log(response);
         getData(response);
       });
   };
@@ -53,7 +52,6 @@ function Collapsible() {
     const data = props.content;
     return (
       <>
-        {/* <div><input type="checkbox"/>{data[index].Value[0]}:</div> */}
         <ListItem>
           <ListItemIcon>
             <Checkbox />
@@ -89,12 +87,9 @@ function Collapsible() {
   const DisplaySingle = (props) => {
     const index = props.objKey;
     const data = props.content;
-    //console.log(data[index])
     return (
       <>
         <div className="reqDiv">
-          {/* <div className='reqDivItem'><input type="checkbox"/>{data[index].Value[0]}</div> */}
-          {/* <div className='reqDivItem'><a href={data[index].Value[1]}>{data[index].Value[1]}</a></div> */}
           <ListItem>
             <ListItemIcon>
               <Checkbox />
@@ -110,16 +105,13 @@ function Collapsible() {
   };
 
   const RequirementDisplay = (props) => {
-    //console.log()
     var reqJson = props.reqJson;
     var displayList = [];
     Object.keys(reqJson).map((item) => {
-      //console.log(reqJson[item])
       if (
         reqJson[item].Predecessor === "0" &&
         reqJson[item].Successor.length === 0
       ) {
-        //console.log("Single: " + reqJson[item].Value[0])
         displayList.push(
           <div key={item + "DS"}>
             <DisplaySingle objKey={item} content={reqJson} />
@@ -130,7 +122,6 @@ function Collapsible() {
         item !== "0" &&
         reqJson[item].Predecessor === "0"
       ) {
-        //console.log("Multi: " + reqJson[item].Value[0])
         displayList.push(
           <div key={item + "DM"}>
             <DisplayMultiple objKey={item} content={reqJson} />

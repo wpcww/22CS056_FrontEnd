@@ -19,7 +19,6 @@ function Manage({ state, setState, structClone, data }) {
       .then((res) => res.json())
 
       .then((response) => {
-        //console.log(response);
         const temp = JSON.parse(JSON.stringify(response));
         getData(temp);
       });
@@ -91,7 +90,10 @@ function Manage({ state, setState, structClone, data }) {
                   }
                 });
                 const temp = JSON.parse(JSON.stringify(structClone.current));
-                setState({ structField: temp, nameField: props.title.Name });
+                setState({
+                  structField: temp,
+                  nameField: props.title.Name,
+                });
               }}
             >
               Edit
