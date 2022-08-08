@@ -25,3 +25,8 @@ jobs:
       - run: npm i
       - run: npm run build --if-present
       # - run: npm test
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS }}
+          aws-secret-access-key: ${{ secrets.SECRET }}
+          aws-region: ap-east-1
