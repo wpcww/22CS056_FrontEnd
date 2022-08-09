@@ -143,7 +143,7 @@ function Manage({ state, setState, structClone, data }) {
           {data[index].Value[0]}:
         </div>
 
-        <div className="newBranch">
+        <div className="newBranchManage">
           {data[index].Successor.map((item) => {
             if (
               data[item].Predecessor === index &&
