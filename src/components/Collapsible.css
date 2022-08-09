@@ -1,3 +1,11 @@
+.prefHolder {
+    /* width: 1000px */
+    position: fixed;
+    left: 15%;
+    right: 15%;
+    min-width: 500px;
+}
+
 .collapsible .content {
     padding: 6px;
     background-color: #eeeeee;
@@ -21,4 +29,39 @@
 
 .newBranch{
     margin-left: 45px;
+}
+
+@media screen and (max-width: 1000px) {
+    .prefHolder {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        min-width: 500px;
+    }
+
+    .collapsible .content {
+        padding: 6px;
+        background-color: #eeeeee;
+    }
+    .collapsible .header {
+        background-color: #dddddd;
+        padding: 6px;
+        cursor: pointer;
+    }
+    
+    .reqDiv{
+        display: flex;
+        /* justify-content: space-between; */
+        /* gap: 1vw; */
+    }
+    
+    .reqDivItem{
+        /* width: 50%; */
+        /*background-color: aquamarine;*/
+    }
+    
+    .newBranch{
+        margin-left: 45px;
+    }
+
 }

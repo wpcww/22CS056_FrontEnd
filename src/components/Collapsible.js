@@ -5,7 +5,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
+import Paper from "@mui/material/Paper";
 import "./Collapsible.css";
+
 function Section(props) {
   const config = {
     defaultExpanded: props.defaultExpanded || false,
@@ -144,7 +146,11 @@ function Collapsible() {
     );
   });
 
-  return <div className="preferences">{itemList2}</div>;
+  return (
+    <Paper className="prefHolder" elevation={8}>
+      <div className="preferences">{itemList2}</div>
+    </Paper>
+  );
 }
 
 export default Collapsible;
