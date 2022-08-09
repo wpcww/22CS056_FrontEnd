@@ -16,5 +16,7 @@
 
 .newBranch{
     /* margin-left: 45px; */
+    margin-left: "36px";
+    margin-bottom: "0px";
     border-left: 2px solid rgb(255, 145, 0);
 }

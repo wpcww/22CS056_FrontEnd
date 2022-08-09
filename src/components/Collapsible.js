@@ -61,10 +61,7 @@ function Collapsible() {
           <ListItemText primary={data[index].Value[0]} />
         </ListItem>
 
-        <div
-          className="newBranch"
-          style={{ "margin-left": "36px", "margin-bottom": "0px" }}
-        >
+        <div className="newBranch">
           {data[index].Successor.map((item) => {
             if (
               data[item].Predecessor === index &&

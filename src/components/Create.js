@@ -202,7 +202,7 @@ function Create({ state, setState, structClone, data }) {
             }}
           ></RemoveIcon>
         </div>
-        <div className="newBranch">
+        <div className="divBranch">
           {
             //Recursion
             state.structField[index].Successor.map((item) => {
