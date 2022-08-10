@@ -166,7 +166,6 @@ function Create({ state, setState, structClone, data }) {
 
   const DisplayMultiple = (props) => {
     const index = props.objKey;
-    //console.log(index)
     return (
       <>
         <div>
@@ -196,7 +195,6 @@ function Create({ state, setState, structClone, data }) {
               handleRemovePred(index);
               handleRemove(index);
               const temp = JSON.parse(JSON.stringify(structClone.current));
-              //setStruct(temp)
               setState({ ...state, structField: temp });
             }}
           ></RemoveIcon>
@@ -205,7 +203,6 @@ function Create({ state, setState, structClone, data }) {
           {
             //Recursion
             state.structField[index].Successor.map((item) => {
-              console.log(state.structField[item]);
               if (
                 state.structField[item].Predecessor === index &&
                 state.structField[item].Successor.length === 0
@@ -234,7 +231,6 @@ function Create({ state, setState, structClone, data }) {
   const RequirementDisplay = () => {
     var displayList = [];
     Object.keys(state.structField).forEach((item) => {
-      //console.log(struct[item])
       if (
         state.structField[item].Predecessor === "0" &&
         state.structField[item].Successor.length === 0
