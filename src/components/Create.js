@@ -76,11 +76,10 @@ function Create({ state, setState, structClone, data }) {
       state.structField[state.structField[index].Predecessor].Successor.indexOf(
         index
       );
-    if (rIndex !== 1) {
-      structClone.current[
-        state.structField[index].Predecessor
-      ].Successor.splice(rIndex, 1);
-    }
+    structClone.current[state.structField[index].Predecessor].Successor.splice(
+      rIndex,
+      1
+    );
   };
 
   //Remove the selected recored, and also its children if exists
@@ -98,7 +97,7 @@ function Create({ state, setState, structClone, data }) {
   //Multiple type to Single type
   const handleSingle = (index) => {
     //Remove all Successor
-    structClone.current[index].Successor.forEach((item, i) => {
+    structClone.current[index].Successor.forEach((item) => {
       handleRemovePred(item);
       handleRemove(item);
     });
@@ -206,6 +205,7 @@ function Create({ state, setState, structClone, data }) {
           {
             //Recursion
             state.structField[index].Successor.map((item) => {
+              console.log(state.structField[item]);
               if (
                 state.structField[item].Predecessor === index &&
                 state.structField[item].Successor.length === 0
@@ -270,27 +270,27 @@ function Create({ state, setState, structClone, data }) {
     return displayList;
   };
 
-  //   const DebugArea = () => {
-  //     return (
-  //       <>
-  //         <div>=====================DEBUG=====================</div>
-  //         <div>Project Name: {state.nameField}</div>
-  //         <div>Data: {JSON.stringify(data.current)}</div>
-  //         <div>JSON: {JSON.stringify(state.structField)}</div>
-  //         {/* <div>Current json: {JSON.stringify(struct)}</div> */}
-  //         <div>Clone json: {JSON.stringify(structClone.current)}</div>
-  //         <div>Output: {JSON.stringify(output.current)}</div>
-  //         <div>
-  //           Sync status:{" "}
-  //           {(
-  //             JSON.stringify(structClone.current) ===
-  //             JSON.stringify(state.structField)
-  //           ).toString()}
-  //         </div>
-  //         <div>=====================DEBUG=====================</div>
-  //       </>
-  //     );
-  //   };
+  const DebugArea = () => {
+    return (
+      <>
+        <div>=====================DEBUG=====================</div>
+        <div>Project Name: {state.nameField}</div>
+        <div>Data: {JSON.stringify(data.current)}</div>
+        <div>JSON: {JSON.stringify(state.structField)}</div>
+        {/* <div>Current json: {JSON.stringify(struct)}</div> */}
+        <div>Clone json: {JSON.stringify(structClone.current)}</div>
+        <div>Output: {JSON.stringify(output.current)}</div>
+        <div>
+          Sync status:{" "}
+          {(
+            JSON.stringify(structClone.current) ===
+            JSON.stringify(state.structField)
+          ).toString()}
+        </div>
+        <div>=====================DEBUG=====================</div>
+      </>
+    );
+  };
 
   const post = () => {
     fetch("https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/update", {
@@ -387,7 +387,7 @@ function Create({ state, setState, structClone, data }) {
           </>
         </form>
       </Container>
-      {/* <DebugArea /> */}
+      <DebugArea />
       <ToastContainer />
     </>
   );

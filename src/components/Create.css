@@ -1,5 +1,6 @@
 .divBranch{
-    margin-left: 5vw;
+    margin-left: 36px;
+    border-left: 2px solid rgba(124, 121, 114, 0.471);
 }
 
 .paper{

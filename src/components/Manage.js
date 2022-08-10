@@ -2,6 +2,11 @@ import { Button, Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { DialogContentText, DialogActions } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
 import useCollapse from "react-collapsed";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
 import "./Manage.css";
 import Create from "./Create";
 
@@ -40,10 +45,10 @@ function Manage({ state, setState, structClone, data }) {
     return (
       <div>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle id="deleteConfirm">{"Are you sure?"}</DialogTitle>
+          <DialogTitle id="deleteConfirm">{"Remove record?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              The record will be removed.
+              Record would be permanently deleted.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -138,12 +143,14 @@ function Manage({ state, setState, structClone, data }) {
     const data = props.content;
     return (
       <>
-        <div>
-          <input type="checkbox" />
-          {data[index].Value[0]}:
-        </div>
+        <ListItem>
+          <ListItemIcon>
+            <Checkbox />
+          </ListItemIcon>
+          <ListItemText primary={data[index].Value[0]} />
+        </ListItem>
 
-        <div className="newBranchManage">
+        <div className="newBranch" style={{ marginLeft: "36px" }}>
           {data[index].Successor.map((item) => {
             if (
               data[item].Predecessor === index &&
@@ -167,20 +174,21 @@ function Manage({ state, setState, structClone, data }) {
       </>
     );
   };
-
   const DisplaySingle = (props) => {
     const index = props.objKey;
     const data = props.content;
     return (
       <>
         <div className="reqDiv">
-          <div className="reqDivItem">
-            <input type="checkbox" />
-            {data[index].Value[0]}
-          </div>
-          <div className="reqDivItem">
-            <a href={data[index].Value[1]}>{data[index].Value[1]}</a>
-          </div>
+          <ListItem>
+            <ListItemIcon>
+              <Checkbox />
+            </ListItemIcon>
+            <ListItemText
+              primary={data[index].Value[0]}
+              secondary={data[index].Value[1]}
+            />
+          </ListItem>
         </div>
       </>
     );
@@ -217,8 +225,10 @@ function Manage({ state, setState, structClone, data }) {
   const itemList = record.map((reqItem, i) => {
     return (
       <Section key={i} title={reqItem}>
-        <div>Requirements:</div>
-        <RequirementDisplay reqJson={reqItem.Requirement} key={reqItem} />
+        <List>
+          <div>Requirements:</div>
+          <RequirementDisplay reqJson={reqItem.Requirement} key={reqItem} />
+        </List>
       </Section>
     );
   });
