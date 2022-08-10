@@ -6,9 +6,8 @@
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    position: sticky;
+    position:static;
     top: 0;
-    min-width: 500px;
     z-index: 999;
 
   }
@@ -89,7 +88,7 @@
       flex-direction: column;
       width: 100%;
       height:auto;
-      position: absolute;
+      position: static;
       top: 11vh;
       left: -200%;
       opacity: 1;
@@ -105,6 +104,7 @@
       margin:0;
       width: 100vw;
       height: auto;
+      top: 70px;
       padding:0;
       max-width: 100% ;
       overflow: hidden;
