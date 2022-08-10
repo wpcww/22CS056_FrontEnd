@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    position:static;
+    position:sticky;
     top: 0;
     z-index: 999;
 
@@ -88,7 +88,7 @@
       flex-direction: column;
       width: 100%;
       height:auto;
-      position: static;
+      position: absolute;
       top: 11vh;
       left: -200%;
       opacity: 1;
