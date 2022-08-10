@@ -18,3 +18,8 @@
     /* margin-left: 45px; */
     border-left: 2px solid rgba(124, 121, 114, 0.471);
 }
+
+a { 
+    color: inherit;
+    text-decoration: none; 
+} 

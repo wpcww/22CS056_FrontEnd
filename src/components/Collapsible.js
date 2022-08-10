@@ -96,10 +96,19 @@ function Collapsible() {
             <ListItemIcon>
               <Checkbox />
             </ListItemIcon>
-            <ListItemText
-              primary={data[index].Value[0]}
-              secondary={data[index].Value[1]}
-            />
+            {data[index].Value[1] !== "" ? (
+              <a href={data[index].Value[1]}>
+                <ListItemText
+                  primary={data[index].Value[0]}
+                  secondary={data[index].Value[1]}
+                />
+              </a>
+            ) : (
+              <ListItemText
+                primary={data[index].Value[0]}
+                secondary={data[index].Value[1]}
+              />
+            )}
           </ListItem>
         </div>
       </>
