@@ -270,27 +270,27 @@ function Create({ state, setState, structClone, data }) {
     return displayList;
   };
 
-  const DebugArea = () => {
-    return (
-      <>
-        <div>=====================DEBUG=====================</div>
-        <div>Project Name: {state.nameField}</div>
-        <div>Data: {JSON.stringify(data.current)}</div>
-        <div>JSON: {JSON.stringify(state.structField)}</div>
-        {/* <div>Current json: {JSON.stringify(struct)}</div> */}
-        <div>Clone json: {JSON.stringify(structClone.current)}</div>
-        <div>Output: {JSON.stringify(output.current)}</div>
-        <div>
-          Sync status:{" "}
-          {(
-            JSON.stringify(structClone.current) ===
-            JSON.stringify(state.structField)
-          ).toString()}
-        </div>
-        <div>=====================DEBUG=====================</div>
-      </>
-    );
-  };
+  //   const DebugArea = () => {
+  //     return (
+  //       <>
+  //         <div>=====================DEBUG=====================</div>
+  //         <div>Project Name: {state.nameField}</div>
+  //         <div>Data: {JSON.stringify(data.current)}</div>
+  //         <div>JSON: {JSON.stringify(state.structField)}</div>
+  //         {/* <div>Current json: {JSON.stringify(struct)}</div> */}
+  //         <div>Clone json: {JSON.stringify(structClone.current)}</div>
+  //         <div>Output: {JSON.stringify(output.current)}</div>
+  //         <div>
+  //           Sync status:{" "}
+  //           {(
+  //             JSON.stringify(structClone.current) ===
+  //             JSON.stringify(state.structField)
+  //           ).toString()}
+  //         </div>
+  //         <div>=====================DEBUG=====================</div>
+  //       </>
+  //     );
+  //   };
 
   const post = () => {
     fetch("https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/update", {
@@ -387,7 +387,7 @@ function Create({ state, setState, structClone, data }) {
           </>
         </form>
       </Container>
-      <DebugArea />
+      {/* <DebugArea /> */}
       <ToastContainer />
     </>
   );
