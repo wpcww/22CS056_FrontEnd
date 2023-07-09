@@ -33,15 +33,29 @@ function Section(props) {
 
 function Collapsible() {
   const [record, getData] = useState([]);
-  const URL = "https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/list";
+  const URL = "https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/authenticate";
   //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      "org": "HKGOV",
+      "vr": "testernum2",
+      "vid": "80f8528baf1e4cfb8eab33b705c625be"
+    })
+  }
+
   const fetchData = () => {
-    fetch(URL)
+    fetch(URL, requestOptions)
       .then((res) => res.json())
 
       .then((response) => {
@@ -144,20 +158,21 @@ function Collapsible() {
     return displayList;
   };
 
-  const itemList2 = record.map((reqItem, i) => {
-    return (
-      <Section key={i} title={reqItem.Name}>
-        <List>
-          <div>Requirements:</div>
-          <RequirementDisplay reqJson={reqItem.Requirement} />
-        </List>
-      </Section>
-    );
-  });
+  // const itemList2 = Object.keys(record).map((reqItem, i) => {
+  //   return (
+  //     <Section key={i} title={reqItem}>
+  //       <List>
+  //         <div>Requirements:</div>
+  //         <RequirementDisplay reqJson={record[reqItem]} />
+  //       </List>
+  //     </Section>
+  //   );
+  // });
 
   return (
     <Paper className="prefHolder" elevation={8}>
-      <div className="preferences">{itemList2}</div>
+      {/* <div className="preferences">record</div> */}
+      <RequirementDisplay reqJson={record}/>
     </Paper>
   );
 }

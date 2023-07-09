@@ -13,16 +13,16 @@ import PublishIcon from "@mui/icons-material/Publish";
 
 function Create({ state, setState, structClone, data }) {
   const output = useRef({
-    Name: "",
-    Requirement: [],
+    vr: "",
+    info: [],
   });
 
   const build = () => {
-    output.current.Name = state.nameField;
-    output.current.Requirement = state.structField;
+    output.current.vr = state.nameField;
+    output.current.info = state.structField;
     Object.keys(state.structField).forEach((item) => {
       if (item !== "0") {
-        output.current.Requirement[item].Value = data.current[item];
+        output.current.info[item].Value = data.current[item];
       }
     });
     toast("Updated!");
@@ -136,7 +136,7 @@ function Create({ state, setState, structClone, data }) {
               style={{ marginLeft: "5px" }}
               required
               name="rText"
-              label="Requirement"
+              label="Field Name"
               variant="filled"
               defaultValue={data.current[index][0]}
               onChange={(e) => handleChangeInput(index, 0, e)}
@@ -145,7 +145,7 @@ function Create({ state, setState, structClone, data }) {
               key={index + "URL"}
               style={{ marginLeft: "5px" }}
               name="URL"
-              label="URL (Optional)"
+              label="Field Value"
               variant="filled"
               defaultValue={data.current[index][1]}
               onChange={(e) => handleChangeInput(index, 1, e)}
@@ -184,7 +184,7 @@ function Create({ state, setState, structClone, data }) {
             key={index + "Branch"}
             style={{ marginLeft: "5px" }}
             name={"cataName" + index}
-            label="Requirement"
+            label="Field Name"
             variant="filled"
             defaultValue={data.current[index][0]}
             onChange={(e) => handleChangeInput(index, 0, e)}
@@ -243,7 +243,7 @@ function Create({ state, setState, structClone, data }) {
             style={{ paddingBottom: "5px" }}
           >
             <div>
-              <Divider variant="middle">Main Requirement</Divider>
+              <Divider variant="middle">Single Field</Divider>
             </div>
             <DisplaySingle objKey={item} />
           </Paper>
@@ -256,7 +256,7 @@ function Create({ state, setState, structClone, data }) {
         displayList.push(
           <Paper elevation={8} className="paper" key={item + "DM"}>
             <div>
-              <Divider variant="middle">Main Requirement</Divider>
+              <Divider variant="middle">Nested Field</Divider>
             </div>
             <DisplayMultiple objKey={item} />
           </Paper>
@@ -266,31 +266,35 @@ function Create({ state, setState, structClone, data }) {
     return displayList;
   };
 
-  //   const DebugArea = () => {
-  //     return (
-  //       <>
-  //         <div>=====================DEBUG=====================</div>
-  //         <div>Project Name: {state.nameField}</div>
-  //         <div>Data: {JSON.stringify(data.current)}</div>
-  //         <div>JSON: {JSON.stringify(state.structField)}</div>
-  //         {/* <div>Current json: {JSON.stringify(struct)}</div> */}
-  //         <div>Clone json: {JSON.stringify(structClone.current)}</div>
-  //         <div>Output: {JSON.stringify(output.current)}</div>
-  //         <div>
-  //           Sync status:{" "}
-  //           {(
-  //             JSON.stringify(structClone.current) ===
-  //             JSON.stringify(state.structField)
-  //           ).toString()}
-  //         </div>
-  //         <div>=====================DEBUG=====================</div>
-  //       </>
-  //     );
-  //   };
+    // const DebugArea = () => {
+    //   return (
+    //     <>
+    //       <div>=====================DEBUG=====================</div>
+    //       <div>Project Name: {state.nameField}</div>
+    //       <div>Data: {JSON.stringify(data.current)}</div>
+    //       <div>JSON: {JSON.stringify(state.structField)}</div>
+    //       {/* <div>Current json: {JSON.stringify(struct)}</div> */}
+    //       <div>Clone json: {JSON.stringify(structClone.current)}</div>
+    //       <div>Output: {JSON.stringify(output.current)}</div>
+    //       <div>
+    //         Sync status:{" "}
+    //         {(
+    //           JSON.stringify(structClone.current) ===
+    //           JSON.stringify(state.structField)
+    //         ).toString()}
+    //       </div>
+    //       <div>=====================DEBUG=====================</div>
+    //     </>
+    //   );
+    // };
 
   const post = () => {
-    fetch("https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/update", {
+    fetch("https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/create", {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
       body: JSON.stringify(output.current),
     });
   };
@@ -316,8 +320,8 @@ function Create({ state, setState, structClone, data }) {
       },
     };
     output.current = {
-      Name: "",
-      Requirement: [],
+      vr: "",
+      info: [],
     };
   };
 
@@ -337,7 +341,7 @@ function Create({ state, setState, structClone, data }) {
                 required
                 error={state.nameField === ""}
                 name="pName"
-                label="Project Name"
+                label="Identity Number"
                 variant="filled"
                 value={state.nameField || ""}
                 onChange={(e) => {
@@ -383,7 +387,7 @@ function Create({ state, setState, structClone, data }) {
           </>
         </form>
       </Container>
-      {/* <DebugArea /> */}
+      {/* {<DebugArea />} */}
       <ToastContainer />
     </>
   );
