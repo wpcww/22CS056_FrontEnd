@@ -42,8 +42,9 @@ function Collapsible({orgRef}) {
 
       .then((response) => {
         getData(response);
-        ver.current = verifyfn(record.info, record.sign, orgRef.pkstr)
-        setVer(ver.current)
+        var result = verifyfn(record.info, record.sign, orgRef.pkstr)
+        ver.current = result
+        setVer(result)
       });
   };
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./Create.css";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
@@ -15,12 +15,13 @@ import CryptoJS from 'crypto-js';
 
 
 function Create({ state, setState, structClone, data, orgRef }) {
-  const prstr_test = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKmC4wbyFrZXLWjMtnhxaW3l0v6Y9TwBUsgUXhjGtX+M2MJCTw5LNczpwk5RqlFFVVJXworuPj+dAtyYoyon3iynSCP0luJYrSTKJE5DyTMbEAOnSYdIllE4Tl1H1QMryxYSTwb8QhH0d4zCFb0z8FWL/fegz2QnUQ88ogD7Yk/7AgMBAAECgYBFy/ABByOU9vZqpYgotcIMj0o+rOqlR4I3gjNwjjljiLIj4ru8jflcI5BvQS8ZAaxtGFexbwHQnaz0+iCNFhdjrQiPhNUHRPRiSkhMo4N4yKr5Sa9p3dQOABKUI4Naz1GvOWh+WL2N5bVl1UFotMopF9NCdb4rccJS2rkglIOaCQJBAOd21lUIEZWvzvyThJvA8aFdtS5CxkpGrEpyi32dXPUkM/CP9B65fWy3KLZcJinc/Md6qPjBkESuoT6MedaKs6cCQQC7etrNJ86vKmKrkabZ7AoSSKJPd77PJMtSIM4eH34xJRcFA4EDidOOybOfvCbbTDOz+WLajjXKDAozcBEL91uNAkEApbOwit0k4ZkjwDPHWk2Nbe0M2Npa5C+mBgHslHfEZYaOXGhh5mD6Ror07WAYvh2DJTdNog/IPTMbIhEk5A8VvwJAW/towmMXesWW54psjFrMji/owoiDq2nn/4Fs30agSUhjROh1MeE7VMENSf+sKMf4TgK7R3OiXGEP2DDRjEduOQJBAKQ0Wg7D1xCrtn4AlfFOlwdCcNVYu0Dieu4LZQczY8KdObLEMjDT90I+N8AKnnocJCXUlQSIfVroNmVE2PgJGgE="
   const output = useRef({
     vr: "",
     org: "",
     info: [],
   });
+  const prstr = useRef("")
+  const [prState, setPr] = useState("")
 
   const build = () => {
     output.current.vr = state.nameField;
@@ -297,12 +298,12 @@ function Create({ state, setState, structClone, data, orgRef }) {
   const post = () => {
     // Generate signature of info
     var encryptCom = new JSEncrypt();
-    encryptCom.setPrivateKey(prstr_test)
+    encryptCom.setPrivateKey(prState)
     var signature = encryptCom.sign((JSON.stringify(output.current.info)), CryptoJS.SHA256, "sha256");
     // Local signature verification test
-    // encryptCom.setPublicKey(orgRef.pkstr);
-    // var res = encryptCom.verify(JSON.stringify(output.current.info), signature, CryptoJS.SHA256);
-    // console.log("self verify: " + res)
+    encryptCom.setPublicKey(orgRef.pkstr);
+    var res = encryptCom.verify(JSON.stringify(output.current.info), signature, CryptoJS.SHA256);
+    console.log("self verify: " + res)
 
     // POST request to DDB
     fetch("https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/create", {
@@ -372,6 +373,22 @@ function Create({ state, setState, structClone, data, orgRef }) {
                     nameField: e.target.value,
                   });
                 }}
+              />
+              <TextField
+                required
+                error={prstr.current === ""}
+                name="prstr"
+                label="Private Key"
+                variant="filled"
+                onChange={(e) => {
+                  prstr.current = e.target.value
+                }}
+                onPaste={(e) => {
+                  prstr.current = e.clipboardData.getData('text')
+                  setPr(prstr.current)
+                }
+                }
+                
               />
               <Button
                 type="button"
