@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Collapsible from "./components/Collapsible";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Create from "./components/Create";
 import Manage from "./components/Manage";
+import Collapsible from "./components/Collapsible";
+import Organization from "./components/Organization";
 
 function App() {
   const [state, setState] = useState({
@@ -21,6 +22,11 @@ function App() {
     0: ["", ""],
   });
 
+  const [orgRef, setOrg]= useState({
+    oCode: "",
+    pkstr: ""
+  })
+
   const structClone = useRef({
     0: {
       Predecessor: null,
@@ -30,9 +36,26 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar />
+        <Navbar 
+          orgRef={orgRef}
+          setOrg={setOrg}
+        />
         <Routes>
-          <Route path="/" element={<Collapsible />} />
+          <Route path="/" element={
+              <Organization
+                orgRef={orgRef}
+                setOrg={setOrg}
+              />
+            } 
+          />
+          <Route 
+            path="/Authenticate"
+            element={
+              <Collapsible 
+                orgRef={orgRef}
+                setOrg={setOrg}
+            />}
+          />
           <Route
             path="/Create"
             element={
@@ -41,6 +64,7 @@ function App() {
                 setState={setState}
                 structClone={structClone}
                 data={data}
+                orgRef={orgRef}
               />
             }
           />

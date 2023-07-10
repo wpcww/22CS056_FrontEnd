@@ -23,3 +23,8 @@ a {
     color: inherit;
     text-decoration: none; 
 } 
+
+.flex-container {
+    display: flex;
+    justify-content:center;
+}

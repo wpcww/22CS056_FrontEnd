@@ -10,16 +10,22 @@ import "react-toastify/dist/ReactToastify.css";
 import Divider from "@mui/material/Divider";
 import Fab from "@mui/material/Fab";
 import PublishIcon from "@mui/icons-material/Publish";
+import JSEncrypt from 'jsencrypt';
+import CryptoJS from 'crypto-js';
 
-function Create({ state, setState, structClone, data }) {
+
+function Create({ state, setState, structClone, data, orgRef }) {
+  const prstr_test = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKmC4wbyFrZXLWjMtnhxaW3l0v6Y9TwBUsgUXhjGtX+M2MJCTw5LNczpwk5RqlFFVVJXworuPj+dAtyYoyon3iynSCP0luJYrSTKJE5DyTMbEAOnSYdIllE4Tl1H1QMryxYSTwb8QhH0d4zCFb0z8FWL/fegz2QnUQ88ogD7Yk/7AgMBAAECgYBFy/ABByOU9vZqpYgotcIMj0o+rOqlR4I3gjNwjjljiLIj4ru8jflcI5BvQS8ZAaxtGFexbwHQnaz0+iCNFhdjrQiPhNUHRPRiSkhMo4N4yKr5Sa9p3dQOABKUI4Naz1GvOWh+WL2N5bVl1UFotMopF9NCdb4rccJS2rkglIOaCQJBAOd21lUIEZWvzvyThJvA8aFdtS5CxkpGrEpyi32dXPUkM/CP9B65fWy3KLZcJinc/Md6qPjBkESuoT6MedaKs6cCQQC7etrNJ86vKmKrkabZ7AoSSKJPd77PJMtSIM4eH34xJRcFA4EDidOOybOfvCbbTDOz+WLajjXKDAozcBEL91uNAkEApbOwit0k4ZkjwDPHWk2Nbe0M2Npa5C+mBgHslHfEZYaOXGhh5mD6Ror07WAYvh2DJTdNog/IPTMbIhEk5A8VvwJAW/towmMXesWW54psjFrMji/owoiDq2nn/4Fs30agSUhjROh1MeE7VMENSf+sKMf4TgK7R3OiXGEP2DDRjEduOQJBAKQ0Wg7D1xCrtn4AlfFOlwdCcNVYu0Dieu4LZQczY8KdObLEMjDT90I+N8AKnnocJCXUlQSIfVroNmVE2PgJGgE="
   const output = useRef({
     vr: "",
+    org: "",
     info: [],
   });
 
   const build = () => {
     output.current.vr = state.nameField;
     output.current.info = state.structField;
+    output.current.org = orgRef.oCode;
     Object.keys(state.structField).forEach((item) => {
       if (item !== "0") {
         output.current.info[item].Value = data.current[item];
@@ -289,13 +295,28 @@ function Create({ state, setState, structClone, data }) {
     // };
 
   const post = () => {
+    // Generate signature of info
+    var encryptCom = new JSEncrypt();
+    encryptCom.setPrivateKey(prstr_test)
+    var signature = encryptCom.sign((JSON.stringify(output.current.info)), CryptoJS.SHA256, "sha256");
+    // Local signature verification test
+    // encryptCom.setPublicKey(orgRef.pkstr);
+    // var res = encryptCom.verify(JSON.stringify(output.current.info), signature, CryptoJS.SHA256);
+    // console.log("self verify: " + res)
+
+    // POST request to DDB
     fetch("https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify(output.current),
+      body: JSON.stringify({
+        vr:output.current.vr,
+        org:output.current.org,
+        info:output.current.info,
+        sign:signature
+      }),
     });
   };
 
@@ -320,6 +341,7 @@ function Create({ state, setState, structClone, data }) {
       },
     };
     output.current = {
+      org: orgRef.oCode,
       vr: "",
       info: [],
     };

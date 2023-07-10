@@ -23,7 +23,8 @@
   .navbar-logo {
     color: #fff;
     justify-self: start;
-    margin-left: 1vw;
+    margin-left: 5px;
+    bottom: 50%;
     cursor: pointer;
     text-decoration: none;
     font-size: 27px;
@@ -128,13 +129,14 @@
       position: absolute;
       top: 0;
       left: 0;
+      margin-left: 5px;
       transform: translate(25%, 50%);
     }
   
     .menu-icon {
       display: block;
       position: absolute;
-      top: -3px;
+      bottom: 50%;
       right: 0;
       transform: translate(-100%, 60%);
       font-size: 1.8rem;

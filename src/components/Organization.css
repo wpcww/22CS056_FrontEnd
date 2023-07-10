@@ -1,0 +1,32 @@
+.divBranch{
+    margin-left: 36px;
+    border-left: 2px solid rgba(124, 121, 114, 0.471);
+}
+
+.paper{
+    margin-bottom: 10px;
+}
+
+.btn-clear{
+    float: right;
+}
+
+.btn-upload{
+    bottom: 75px;
+    right: 75px;
+    position: fixed;
+}
+
+.desc-s{
+    text-align: center;
+}
+
+.desc-m{
+    text-align: center;
+    font-size:1.875;
+}
+
+.desc-l{
+    text-align: center;
+    font-size:2.5em;
+}

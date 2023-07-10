@@ -1,46 +1,28 @@
-import React, { useState, useEffect } from "react";
-import useCollapse from "react-collapsed";
-import List from "@mui/material/List";
+import React, { useState, useRef } from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Fab from "@mui/material/Fab";
+import PublishIcon from "@mui/icons-material/Publish";
+import JSEncrypt from 'jsencrypt';
+import CryptoJS from 'crypto-js';
 import "./Collapsible.css";
 
-function Section(props) {
-  const config = {
-    defaultExpanded: props.defaultExpanded || false,
-    collapsedHeight: props.collapsedHeight || 0,
-  };
-  const { getCollapseProps, getToggleProps, isExpanded } = useCollapse(config);
-  return (
-    <div className="collapsible">
-      <div className="header" {...getToggleProps()}>
-        <div className="title">{props.title}</div>
-        <div className="icon">
-          <i
-            className={"fas fa-chevron-circle-" + (isExpanded ? "up" : "down")}
-          ></i>
-        </div>
-      </div>
-      <div {...getCollapseProps()}>
-        <div className="content">{props.children}</div>
-      </div>
-    </div>
-  );
-}
-
-function Collapsible() {
-  const [record, getData] = useState([]);
+function Collapsible({orgRef}) {
+  const [record, getData] = useState({
+    info:{},
+    sign:""
+  });
+  const vr = useRef("")
+  const [vrState, setVr] = useState("")
+  const vid = useRef("")
+  const [vidState, setVid] = useState("")
+  const ver = useRef(false)
+  const [verState, setVer] = useState(false)
   const URL = "https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/authenticate";
-  //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
-
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -48,9 +30,9 @@ function Collapsible() {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      "org": "HKGOV",
-      "vr": "testernum2",
-      "vid": "80f8528baf1e4cfb8eab33b705c625be"
+      "org": orgRef.oCode,
+      "vr": vrState,
+      "vid": vidState
     })
   }
 
@@ -60,6 +42,8 @@ function Collapsible() {
 
       .then((response) => {
         getData(response);
+        ver.current = verifyfn(record.info, record.sign, orgRef.pkstr)
+        setVer(ver.current)
       });
   };
 
@@ -158,23 +142,83 @@ function Collapsible() {
     return displayList;
   };
 
-  // const itemList2 = Object.keys(record).map((reqItem, i) => {
-  //   return (
-  //     <Section key={i} title={reqItem}>
-  //       <List>
-  //         <div>Requirements:</div>
-  //         <RequirementDisplay reqJson={record[reqItem]} />
-  //       </List>
-  //     </Section>
-  //   );
-  // });
-
   return (
-    <Paper className="prefHolder" elevation={8}>
-      {/* <div className="preferences">record</div> */}
-      <RequirementDisplay reqJson={record}/>
-    </Paper>
+    <>
+      <div>Organization Code: {orgRef.oCode}</div>
+      <div>Organization Public Key: {orgRef.pkstr}</div>
+      <Paper className="prefHolder" elevation={8}>
+        <div className="flex-container">
+          <div style={{marginRight:"10px"}}>
+            <TextField
+                          required
+                          error={vr.current === ""}
+                          name="vr"
+                          label="Identity Document"
+                          variant="filled"
+                          onChange={(e) => {vr.current = e.target.value}}
+                          onPaste={(e) => {vr.current = e.clipboardData.getData('text')
+                          setVr(vr.current)
+                          console.log("Vr: " + vr.current)
+                        }}
+            />
+          </div>
+          <div style={{marginLeft:"10px"}}>
+            <TextField
+                          required
+                          error={vid.current === ""}
+                          name="vid"
+                          label="Vaccination ID"
+                          variant="filled"
+                          onChange={(e) => {
+                              vid.current = e.target.value
+                          }}
+                          onPaste={(e) => {
+                            vid.current = e.clipboardData.getData('text')
+                            setVid(vid.current)
+                            console.log("Vid: " + vid.current)
+                          }
+                          }
+            />
+          </div>
+        </div>
+        {/* <div className="preferences">record</div> */}
+        {
+          verState
+          ?<RequirementDisplay reqJson={record.info}/>
+          :<RequirementDisplay reqJson={record.info}/>
+        }
+        <div className="btn-upload">
+                <Fab
+                  style={{
+                    position: "absolute",
+                    background: "#ffdbcc",
+                    color: "#d11f00",
+                  }}
+                >
+                  <PublishIcon
+                    type="button"
+                    onClick={() => {
+                      fetchData();
+                    }}
+                  ></PublishIcon>
+                </Fab>
+              </div>
+      </Paper>
+    </>
+    
   );
 }
+
+function verifyfn(message, signature, pkstr){
+  console.log("Message: " + JSON.stringify(message))
+  console.log("Signature: " + signature)
+  console.log("Public Key: " + pkstr)
+  var verifyCom = new JSEncrypt();
+  verifyCom.setPublicKey(pkstr);
+  var verified = verifyCom.verify(JSON.stringify(message), signature, CryptoJS.SHA256);
+  console.log("Verify result: " + verified)
+  return verified
+}
+
 
 export default Collapsible;
