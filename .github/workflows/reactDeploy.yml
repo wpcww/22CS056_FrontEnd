@@ -31,4 +31,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           #Needs to be the same as the S3 region location
           aws-region: us-east-1
-      - run: aws s3 sync ./build s3://pocbucket1.brian
+      - run: aws s3 sync ./build s3://reactjsauthenticator
