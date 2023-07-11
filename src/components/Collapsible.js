@@ -14,32 +14,6 @@ import "./Collapsible.css";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
 function Collapsible({orgRef}) {
-  // QR Code scanner setup
-  useEffect(() => {
-    const scanner = new Html5QrcodeScanner(
-      'reader',
-      {
-        qrbox:{
-          width: 250,
-          height: 250
-        },
-        fps:5
-      }
-    );
-    scanner.render(success,error)
-    function success(result){
-      scanner.clear()
-      console.log("Scan result: " + result.toString("utf8"))
-    }
-    function error(err){
-      // console.log("Scan error: " + err)
-    }
-  },[])
-
-  const [record, getData] = useState({
-    info:{},
-    sign:""
-  });
   const vr = useRef("")
   const [vrState, setVr] = useState("")
   const vid = useRef("")
@@ -59,19 +33,56 @@ function Collapsible({orgRef}) {
       "vid": vidState
     })
   }
+  // QR Code scanner setup
+  useEffect(() => {
+    const scanner = new Html5QrcodeScanner(
+      'reader',
+      {
+        qrbox:{
+          width: 250,
+          height: 250
+        },
+        fps:5
+      }
+    );
+    scanner.render(success,error)
+    function success(result){
+      scanner.clear()
+      const resJson = JSON.parse(result.toString("utf8"))
+      vr.current = resJson.vr
+      setVr(resJson.vr)
+      vid.current = resJson.vid
+      setVid(resJson.vid)
+    }
+    function error(err){
+      // console.log("Scan error: " + err)
+    }
+  },[vrState,vidState])
+
+  const [record, getData] = useState({
+    info:{},
+    sign:""
+  });
 
   const fetchData = () => {
+    console.log("Vr: " + vrState)
+    console.log("Vid: " + vidState)
     fetch(URL, requestOptions)
-      .then((res) => res.json())
-
-      .then((response) => {
-        getData({info:JSON.parse(response.info), sign:response.sign});
-        var result = verifyfn(response.info, response.sign, orgRef.pkstr)
-        ver.current = result
-        result === false
-        ?toast("Organization Mismatch.")
-        :setVer(result)
-      });
+      
+    .then((res) => {
+      if (res.ok){
+        res.json().then((response) => {
+          getData({info:JSON.parse(response.info), sign:response.sign});
+          var result = verifyfn(response.info, response.sign, orgRef.pkstr)
+          ver.current = result
+          result === false
+          ? toast("Organization Mismatch.")
+          : setVer(result)
+        })
+      }else{
+        toast("Request failed, please Retry")
+      }
+    })
   };
 
   const DisplayMultiple = (props) => {
@@ -181,11 +192,12 @@ function Collapsible({orgRef}) {
                           error={vr.current === ""}
                           name="vr"
                           label="Identity Document"
+                          value={vr.current}
                           variant="filled"
                           onChange={(e) => {vr.current = e.target.value}}
                           onPaste={(e) => {vr.current = e.clipboardData.getData('text')
                           setVr(vr.current)
-                          console.log("Vr: " + vr.current)
+                          // console.log("Vr: " + vr.current)
                         }}
             />
           </div>
@@ -195,6 +207,7 @@ function Collapsible({orgRef}) {
                           error={vid.current === ""}
                           name="vid"
                           label="Vaccination ID"
+                          value={vid.current}
                           variant="filled"
                           onChange={(e) => {
                               vid.current = e.target.value
@@ -202,7 +215,7 @@ function Collapsible({orgRef}) {
                           onPaste={(e) => {
                             vid.current = e.clipboardData.getData('text')
                             setVid(vid.current)
-                            console.log("Vid: " + vid.current)
+                            // console.log("Vid: " + vid.current)
                           }
                           }
             />
@@ -243,9 +256,9 @@ function Collapsible({orgRef}) {
 }
 
 function verifyfn(message, signature, pkstr){
-  console.log("Message: " + message)
-  console.log("Signature: " + signature)
-  console.log("Public Key: " + pkstr)
+  // console.log("Message: " + message)
+  // console.log("Signature: " + signature)
+  // console.log("Public Key: " + pkstr)
   var verifyCom = new JSEncrypt();
   verifyCom.setPublicKey(pkstr);
   var verified = verifyCom.verify(message, signature, CryptoJS.SHA256);

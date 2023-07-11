@@ -21,6 +21,7 @@
     "react-native-digital-signature": "^0.2.0",
     "react-native-rsa-native": "^2.0.5",
     "react-native-web": "^0.19.6",
+    "react-qr-code": "^2.0.11",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.0.5",

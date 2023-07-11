@@ -12,9 +12,16 @@ import Fab from "@mui/material/Fab";
 import PublishIcon from "@mui/icons-material/Publish";
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
+import QRCode from 'react-qr-code';
 
 
 function Create({ state, setState, structClone, data, orgRef }) {
+  //QR code generate setup
+  const [value, setValue] = useState();
+  const back = '#FFFFFF';
+  const fore = '#000000';
+  const size = 256;
+
   const output = useRef({
     vr: "",
     org: "",
@@ -318,7 +325,27 @@ function Create({ state, setState, structClone, data, orgRef }) {
         info:JSON.stringify(output.current.info),
         sign:signature
       }),
-    });
+    })
+    .then(
+      (res) => {
+        if(res.ok){
+            res.json().then((response) => {
+                setValue(
+                  JSON.stringify(
+                  {
+                    org:output.current.org,
+                    vr:output.current.vr,
+                    vid:response
+                  }
+                  )
+                )
+            })
+            toast("Organization confirmed.")
+        }else{
+            toast("Invalid organization Code, please try again.")
+        }
+    }
+    )
   };
 
   const clear = () => {
@@ -426,6 +453,15 @@ function Create({ state, setState, structClone, data, orgRef }) {
           </>
         </form>
       </Container>
+      {value && (
+                    <QRCode
+                        title="GeeksForGeeks"
+                        value={value}
+                        bgColor={back}
+                        fgColor={fore}
+                        size={size === '' ? 0 : size}
+                    />
+                )}
       {/* {<DebugArea />} */}
       <ToastContainer />
     </>
