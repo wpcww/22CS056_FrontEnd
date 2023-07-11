@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect} from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -7,11 +7,35 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Fab from "@mui/material/Fab";
 import PublishIcon from "@mui/icons-material/Publish";
+import { ToastContainer, toast } from "react-toastify";
 import JSEncrypt from 'jsencrypt';
 import CryptoJS from 'crypto-js';
 import "./Collapsible.css";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 function Collapsible({orgRef}) {
+  // QR Code scanner setup
+  useEffect(() => {
+    const scanner = new Html5QrcodeScanner(
+      'reader',
+      {
+        qrbox:{
+          width: 250,
+          height: 250
+        },
+        fps:5
+      }
+    );
+    scanner.render(success,error)
+    function success(result){
+      scanner.clear()
+      console.log("Scan result: " + result.toString("utf8"))
+    }
+    function error(err){
+      // console.log("Scan error: " + err)
+    }
+  },[])
+
   const [record, getData] = useState({
     info:{},
     sign:""
@@ -41,10 +65,12 @@ function Collapsible({orgRef}) {
       .then((res) => res.json())
 
       .then((response) => {
-        getData(response);
-        var result = verifyfn(record.info, record.sign, orgRef.pkstr)
+        getData({info:JSON.parse(response.info), sign:response.sign});
+        var result = verifyfn(response.info, response.sign, orgRef.pkstr)
         ver.current = result
-        setVer(result)
+        result === false
+        ?toast("Organization Mismatch.")
+        :setVer(result)
       });
   };
 
@@ -145,9 +171,9 @@ function Collapsible({orgRef}) {
 
   return (
     <>
-      <div>Organization Code: {orgRef.oCode}</div>
-      <div>Organization Public Key: {orgRef.pkstr}</div>
+      {/* <div>Organization Public Key: {orgRef.pkstr}</div> */}
       <Paper className="prefHolder" elevation={8}>
+        <div>Organization Code: {orgRef.oCode}</div>
         <div className="flex-container">
           <div style={{marginRight:"10px"}}>
             <TextField
@@ -182,11 +208,10 @@ function Collapsible({orgRef}) {
             />
           </div>
         </div>
-        {/* <div className="preferences">record</div> */}
         {
           verState
           ?<RequirementDisplay reqJson={record.info}/>
-          :<RequirementDisplay reqJson={record.info}/>
+          :<></>
         }
         <div className="btn-upload">
                 <Fab
@@ -205,18 +230,25 @@ function Collapsible({orgRef}) {
                 </Fab>
               </div>
       </Paper>
+      {verState === false
+      ?<div className="readContainer">
+        <div id='reader'></div>
+      </div>
+      :<div></div>
+      }
+      <ToastContainer />
     </>
     
   );
 }
 
 function verifyfn(message, signature, pkstr){
-  console.log("Message: " + JSON.stringify(message))
+  console.log("Message: " + message)
   console.log("Signature: " + signature)
   console.log("Public Key: " + pkstr)
   var verifyCom = new JSEncrypt();
   verifyCom.setPublicKey(pkstr);
-  var verified = verifyCom.verify(JSON.stringify(message), signature, CryptoJS.SHA256);
+  var verified = verifyCom.verify(message, signature, CryptoJS.SHA256);
   console.log("Verify result: " + verified)
   return verified
 }

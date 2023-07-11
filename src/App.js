@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Create from "./components/Create";
@@ -33,6 +33,11 @@ function App() {
       Successor: [],
     },
   });
+
+  const redir = () =>{
+    return orgRef.pkstr === undefined || orgRef.pkstr === ""
+  }
+
   return (
     <>
       <Router>
@@ -51,15 +56,19 @@ function App() {
           <Route 
             path="/Authenticate"
             element={
-              <Collapsible 
+              redir()
+              ?<Navigate to="/"/>
+              :<Collapsible 
                 orgRef={orgRef}
                 setOrg={setOrg}
-            />}
+                />}
           />
           <Route
             path="/Create"
             element={
-              <Create
+              redir()
+              ?<Navigate to="/"/>
+              :<Create
                 state={state}
                 setState={setState}
                 structClone={structClone}
@@ -83,6 +92,10 @@ function App() {
       </Router>
     </>
   );
+
+
 }
+
+
 
 export default App;

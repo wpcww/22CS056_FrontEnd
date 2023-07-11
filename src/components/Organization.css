@@ -23,10 +23,16 @@
 
 .desc-m{
     text-align: center;
-    font-size:1.875;
+    font-size:1.875em;
 }
 
 .desc-l{
     text-align: center;
     font-size:2.5em;
+}
+
+.tfHolder{
+    margin: 30px auto auto auto;
+    height: 10vh;
+    width: 191px;
 }

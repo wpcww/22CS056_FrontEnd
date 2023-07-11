@@ -63,7 +63,7 @@
   }
   
   .nav-links:hover {
-    border-bottom: 4px solid #fff;
+    border-bottom: 4px solid #00a6ff;
     transition: all 0.2s ease-out;
   }
   
@@ -129,7 +129,6 @@
       position: absolute;
       top: 0;
       left: 0;
-      margin-left: 5px;
       transform: translate(25%, 50%);
     }
   

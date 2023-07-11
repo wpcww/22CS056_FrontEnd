@@ -315,7 +315,7 @@ function Create({ state, setState, structClone, data, orgRef }) {
       body: JSON.stringify({
         vr:output.current.vr,
         org:output.current.org,
-        info:output.current.info,
+        info:JSON.stringify(output.current.info),
         sign:signature
       }),
     });

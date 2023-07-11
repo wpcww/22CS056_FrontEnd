@@ -36,14 +36,14 @@ function Organization({ orgRef, setOrg }){
     return (<>
         <Container>
             <form>
-            <div style={{margin:"30px auto auto auto", height:"10vh", width:"50%"}}>
+            <div className="tfHolder">
                 <TextField
                     required
                     error={orgTemp.current === ""}
                     name="oCode"
                     label="Organization Code"
                     variant="filled"
-                    // value={orgRef || ""}
+                    onSubmit={(e) => e.preventDefault()}
                     onChange={(e) => {
                         orgTemp.current = e.target.value
                         /////Debug in Console

@@ -25,6 +25,21 @@ a {
 } 
 
 .flex-container {
+    margin-top: 2vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
     display: flex;
     justify-content:center;
+}
+
+.readContainer{
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+}
+
+#reader{
+    margin-top: 5vh;
+    max-height: 50vh;
+    width: 80vw;
 }
