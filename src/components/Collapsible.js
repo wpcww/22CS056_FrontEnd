@@ -22,7 +22,7 @@ function Collapsible({orgRef}) {
   const [verState, setVer] = useState(false)
   const URL = "https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/authenticate";
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
