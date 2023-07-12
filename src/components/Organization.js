@@ -10,7 +10,7 @@ import Fab from "@mui/material/Fab";
 function Organization({ orgRef, setOrg }){
     const orgTemp = useRef("")
     const retrieve = () => {
-        fetch("https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/retrieve", {
+        fetch("https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/retrieve", {
             method: "POST",
             headers: {
               'Content-Type': 'application/json',

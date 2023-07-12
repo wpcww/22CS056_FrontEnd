@@ -20,7 +20,7 @@ function Collapsible({orgRef}) {
   const [vidState, setVid] = useState("")
   const ver = useRef(false)
   const [verState, setVer] = useState(false)
-  const URL = "https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/authenticate";
+  const URL = "https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/authenticate";
   const requestOptions = {
     method: 'POST',
     headers: {

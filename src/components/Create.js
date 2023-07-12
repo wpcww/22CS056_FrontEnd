@@ -313,7 +313,7 @@ function Create({ state, setState, structClone, data, orgRef }) {
     console.log("self verify: " + res)
 
     // POST request to DDB
-    fetch("https://7li91t4asl.execute-api.us-east-1.amazonaws.com/development/create", {
+    fetch("https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
