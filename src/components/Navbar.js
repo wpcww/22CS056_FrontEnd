@@ -38,11 +38,11 @@ function Navbar({orgRef}) {
                         Create
                         </Link>
                     </li>
-                    <li className='nav-item'>
+                    {/* <li className='nav-item'>
                         <Link to='/manage' className='nav-links' onClick={closeMobileMenu}>
                         Manage
                         </Link>
-                    </li>
+                    </li> */}
                 
                 </ul> 
             </>

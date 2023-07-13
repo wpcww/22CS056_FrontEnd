@@ -13,7 +13,6 @@ import Create from "./Create";
 function Manage({ state, setState, structClone, data }) {
   const [record, getData] = useState([]);
   const URL = "https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/list";
-  //const CataURL = 'https://s3.amazonaws.com/pocbucket2.brian/test3.json'
 
   useEffect(() => {
     fetchData();
