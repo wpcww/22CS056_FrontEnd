@@ -39,7 +39,7 @@ function Create({ state, setState, structClone, data, orgRef }) {
         output.current.info[item].Value = data.current[item];
       }
     });
-    toast("Updated!");
+    //toast("Updated!");
   };
 
   //Rerender with the all the changes done to the structure and data
@@ -311,6 +311,8 @@ function Create({ state, setState, structClone, data, orgRef }) {
     encryptCom.setPublicKey(orgRef.pkstr);
     var res = encryptCom.verify(JSON.stringify(output.current.info), signature, CryptoJS.SHA256);
     console.log("self verify: " + res)
+    res
+    ?
 
     // POST request to DDB
     fetch("https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/create", {
@@ -346,6 +348,7 @@ function Create({ state, setState, structClone, data, orgRef }) {
         }
     }
     )
+    :toast("Invalid private key")
   };
 
   const clear = () => {
@@ -443,9 +446,13 @@ function Create({ state, setState, structClone, data, orgRef }) {
                 <PublishIcon
                   type="button"
                   onClick={() => {
-                    build();
-                    commit();
-                    post();
+                    if(state.nameField !== "" && prState !== ""){
+                      build();
+                      commit();
+                      post();
+                    }else{
+                      toast("Field missing, please check for input.")
+                    }
                   }}
                 ></PublishIcon>
               </Fab>

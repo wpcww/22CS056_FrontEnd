@@ -70,8 +70,11 @@ function Collapsible({orgRef}) {
     fetch(URL, requestOptions)
       
     .then((res) => {
-      if (res.ok){
-        res.json().then((response) => {
+      if(res.ok){
+        return res.json()
+      }
+      throw new Error('Err')
+    }).then((response) => {
           getData({info:JSON.parse(response.info), sign:response.sign});
           var result = verifyfn(response.info, response.sign, orgRef.pkstr)
           ver.current = result
@@ -79,10 +82,7 @@ function Collapsible({orgRef}) {
           ? toast("Organization Mismatch.")
           : setVer(result)
         })
-      }else{
-        toast("Request failed, please Retry")
-      }
-    })
+      .catch(()=>{toast("Request failed, please Retry")});
   };
 
   const DisplayMultiple = (props) => {
@@ -237,7 +237,9 @@ function Collapsible({orgRef}) {
                   <PublishIcon
                     type="button"
                     onClick={() => {
-                      fetchData();
+                      vrState !== "" && vidState !== ""
+                      ?fetchData()
+                      :toast("Missing field, please check")
                     }}
                   ></PublishIcon>
                 </Fab>
