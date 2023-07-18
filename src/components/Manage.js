@@ -50,7 +50,7 @@ function Manage({ state, setState, structClone, data }) {
   
   const ShowOrganization = () =>{
     return (
-      record.map(({ org,pustr,status }, i) => (
+      record.map(({ org,pustr,orgstatus }, i) => (
         <div key={i} className="orgItem">
             {i === 0 ? null : ''}
             <TextField
@@ -60,7 +60,7 @@ function Manage({ state, setState, structClone, data }) {
             />
             <TextField
               label="Status"
-              value={status}
+              value={orgstatus}
             />
 
         </div>
