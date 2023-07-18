@@ -1,18 +1,15 @@
-import { Button, Dialog, DialogTitle, DialogContent } from "@mui/material";
-import { DialogContentText, DialogActions } from "@mui/material";
 import React, { useState, useEffect, useRef } from "react";
-import useCollapse from "react-collapsed";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Checkbox from "@mui/material/Checkbox";
+import { Button } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { ToastContainer, toast } from "react-toastify";
+import Fab from "@mui/material/Fab";
+import PublishIcon from "@mui/icons-material/Publish";
 import "./Manage.css";
-import Create from "./Create";
 
 function Manage({ state, setState, structClone, data }) {
   const [record, getData] = useState([]);
-  const URL = "https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/list";
+  const [org, setOrg] = useState([]);
+  const URL = "https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/organization";
 
   useEffect(() => {
     fetchData();
@@ -21,230 +18,88 @@ function Manage({ state, setState, structClone, data }) {
   const fetchData = () => {
     fetch(URL)
       .then((res) => res.json())
-
       .then((response) => {
-        const temp = JSON.parse(JSON.stringify(response));
-        getData(temp);
+        getData(response.Items);
       });
   };
-
-  const deletePending = useRef("");
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const Alert = () => {
+  const call = () =>{
+    fetch("https://8in207fxt2.execute-api.us-east-1.amazonaws.com/dev/toggle", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        "oCode":org
+      }),
+    })
+    .then(
+      (res) => {
+        if(res.ok){
+            res.json().then((response) => {
+                
+                
+            })
+            toast("Status toggled")
+        }else{
+            toast("Request failed, please try again")
+        }
+    }
+    )
+  }
+  
+  const ShowOrganization = () =>{
     return (
-      <div>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle id="deleteConfirm">{"Remove record?"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Record would be permanently deleted.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                remove(deletePending.current);
-                handleClose();
-              }}
-              color="primary"
-            >
-              Confirm
-            </Button>
-            <Button onClick={() => handleClose()} color="primary" autoFocus>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
-  };
+      record.map(({ org,pustr,status }, i) => (
+        <div key={i} className="orgItem">
+            {i === 0 ? null : ''}
+            <TextField
+              label="Organization Code"
+              value={org}
+              onClick={(e)=>{setOrg(e.target.value)}}
+            />
+            <TextField
+              label="Status"
+              value={status}
+            />
 
-  function Section(props) {
-    const config = {
-      defaultExpanded: props.defaultExpanded || false,
-      collapsedHeight: props.collapsedHeight || 0,
-    };
-    const { getCollapseProps, getToggleProps, isExpanded } =
-      useCollapse(config);
-    return (
-      <div className="collapsible">
-        <div className="header" {...getToggleProps()}>
-          <div className="title">
-            {props.title.Name}
-
-            <Button
-              onClick={() => {
-                structClone.current = props.title.Requirement;
-                Object.keys(props.title.Requirement).forEach((item) => {
-                  if (item !== "0") {
-                    data.current[item] = [
-                      props.title.Requirement[item].Value[0],
-                      props.title.Requirement[item].Value[1],
-                    ];
-                  }
-                });
-                const temp = JSON.parse(JSON.stringify(structClone.current));
-                setState({
-                  structField: temp,
-                  nameField: props.title.Name,
-                });
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => {
-                deletePending.current = props.title.Name;
-                handleOpen();
-              }}
-            >
-              Remove
-            </Button>
-          </div>
-          <div className="icon">
-            <i
-              className={
-                "fas fa-chevron-circle-" + (isExpanded ? "up" : "down")
-              }
-            ></i>
-          </div>
         </div>
-        <div {...getCollapseProps()}>
-          <div className="content">{props.children}</div>
-        </div>
-      </div>
-    );
+    ))
+    )
   }
 
-  const remove = async (Name) => {
-    await fetch(
-      "https://zwcpq1a6qg.execute-api.ap-east-1.amazonaws.com/dev/delete",
-      {
-        method: "DELETE",
-        body: JSON.stringify({ Name: Name }),
-      }
-    );
-    window.location.reload();
-  };
-
-  const DisplayMultiple = (props) => {
-    const index = props.objKey;
-    const data = props.content;
-    return (
-      <>
-        <ListItem>
-          <ListItemIcon>
-            <Checkbox />
-          </ListItemIcon>
-          <ListItemText primary={data[index].Value[0]} />
-        </ListItem>
-
-        <div className="newBranch" style={{ marginLeft: "36px" }}>
-          {data[index].Successor.map((item) => {
-            if (
-              data[item].Predecessor === index &&
-              data[item].Successor.length === 0
-            ) {
-              return (
-                <DisplaySingle objKey={item} content={data} key={item + "DS"} />
-              );
-            } else if (data[item].Successor.length !== 0 && item !== "0") {
-              return (
-                <DisplayMultiple
-                  objKey={item}
-                  content={data}
-                  key={item + "DM"}
-                />
-              );
-            }
-            return null;
-          })}
-        </div>
-      </>
-    );
-  };
-  const DisplaySingle = (props) => {
-    const index = props.objKey;
-    const data = props.content;
-    return (
-      <>
-        <div className="reqDiv">
-          <ListItem>
-            <ListItemIcon>
-              <Checkbox />
-            </ListItemIcon>
-            <ListItemText
-              primary={data[index].Value[0]}
-              secondary={data[index].Value[1]}
-            />
-          </ListItem>
-        </div>
-      </>
-    );
-  };
-
-  const RequirementDisplay = (props) => {
-    var reqJson = props.reqJson;
-    var displayList = [];
-    Object.keys(reqJson).forEach((item) => {
-      if (
-        reqJson[item].Predecessor === "0" &&
-        reqJson[item].Successor.length === 0
-      ) {
-        displayList.push(
-          <div key={item + "DS"}>
-            <DisplaySingle objKey={item} content={reqJson} />
-          </div>
-        );
-      } else if (
-        reqJson[item].Successor.length !== 0 &&
-        item !== "0" &&
-        reqJson[item].Predecessor === "0"
-      ) {
-        displayList.push(
-          <div key={item + "DM"}>
-            <DisplayMultiple objKey={item} content={reqJson} />
-          </div>
-        );
-      }
-    });
-    return displayList;
-  };
-
-  const itemList = record.map((reqItem, i) => {
-    return (
-      <Section key={i} title={reqItem}>
-        <List>
-          <div>Requirements:</div>
-          <RequirementDisplay reqJson={reqItem.Requirement} key={reqItem} />
-        </List>
-      </Section>
-    );
-  });
 
   return (
-    <div className="flexContainer">
-      <div className="preferences">{itemList}</div>
-      <div className="editArea">
-        <Create
-          state={state}
-          setState={setState}
-          structClone={structClone}
-          data={data}
-        />
+    <>
+      <div className="orgContainer">
+        <ShowOrganization/>
+        <div className="desc-m">
+          Selected Organization:
+        </div>
+        <div className="desc-l">
+          {org}
+        </div>
       </div>
-      <Alert />
-    </div>
+      <div className="btn-upload">
+                <Fab
+                  style={{
+                    position: "absolute",
+                    background: "#ffdbcc",
+                    color: "#d11f00",
+                  }}
+                >
+                  <PublishIcon
+                    type="button"
+                    onClick={() => {
+                      org !== ""
+                      ?call()
+                      :toast("Please select an organization.")
+                    }}
+                  ></PublishIcon>
+                </Fab>
+              </div>
+      <ToastContainer />
+    </>
   );
 }
 

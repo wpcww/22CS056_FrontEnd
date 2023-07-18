@@ -47,6 +47,28 @@
     flex-grow: 6;  
 }
 
+.orgContainer{
+    padding-top: 20px;
+}
+
+.orgItem{
+    margin: 10px;
+}
+
+.desc-s{
+    text-align: center;
+}
+
+.desc-m{
+    text-align: center;
+    font-size:1.875em;
+}
+
+.desc-l{
+    text-align: center;
+    font-size:2.5em;
+}
+
 @media screen and (max-width: 640px) {
     .collapsible .content {
         padding: 6px;

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Create from "./components/Create";
-// import Manage from "./components/Manage";
+import Manage from "./components/Manage";
 import Collapsible from "./components/Collapsible";
 import Organization from "./components/Organization";
 
@@ -77,7 +77,7 @@ function App() {
               />
             }
           />
-          {/* <Route
+          <Route
             path="/Manage"
             element={
               <Manage
@@ -87,7 +87,7 @@ function App() {
                 data={data}
               />
             }
-          /> */}
+          />
         </Routes>
       </Router>
     </>
